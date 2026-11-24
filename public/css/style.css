@@ -364,3 +364,11 @@ table.t td { padding: 9px 8px; border-bottom: 1px solid #edf1f7; vertical-align:
 .contact .cmail { font-size: 19px; font-weight: 700; word-break: break-all; margin: 2px 0 16px; }
 .contact .cbtns { display: flex; gap: 8px; flex-wrap: wrap; }
 @media (max-width: 400px) { .contacts { grid-template-columns: 1fr; } }
+
+/* round 4: footer always at the bottom, empty groups, coming soon */
+#app { min-height: 100vh; display: flex; flex-direction: column; }
+#app > main { flex: 1 0 auto; width: 100%; box-sizing: border-box; }
+#app > .site-foot { flex-shrink: 0; }
+.panel.soon { text-align: center; padding: 48px 20px; }
+.panel.soon h2 { margin: 0; font-size: 28px; color: var(--navy-800); }
+.docs-empty { color: var(--ink-soft); margin: 0; }

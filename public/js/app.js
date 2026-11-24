@@ -95,11 +95,11 @@
   function shell(inner, route) {
     const u = session.user;
     const av = u.role === 'delegate' ? `<img src="https://flagcdn.com/w80/${country(u.id).iso}.png" alt="">` : `<span class="av">${esc(u.name[0])}</span>`;
-    const nav = NAV.map(([h, t]) => `<a href="${h}" class="${route === h ? 'on' : ''}">${t}</a>`).join('') +
+    const nav = NAV.filter(([h]) => !(isAdmin() && h === '#/notes')).map(([h, t]) => `<a href="${h}" class="${route === h ? 'on' : ''}">${t}</a>`).join('') +
       (isAdmin() ? `<a href="#/presidency" class="admin ${route === '#/presidency' ? 'on' : ''}">Presidency</a>` : '');
     return `
       <header class="topbar"><div class="topbar-in">
-        <a class="brand" href="#/"><img src="assets/unsc-logo.png" alt=""><div><div class="t1">UEPRIM-MUN IV Edition</div><div class="t2">Security Council</div></div></a>
+        <a class="brand" href="#/"><img src="assets/unsc-logo.png" alt=""><div><div class="t2">Security Council</div></div></a>
         <button class="menu-btn" id="menuBtn" aria-label="Open menu">${I.menu}</button>
         <nav class="nav" id="nav">${nav}
           <div class="who"><span class="chip-user">${av}<span>${esc(u.role === 'delegate' ? u.short : u.name)}</span></span><button class="linkbtn" id="logoutBtn">Sign out</button></div>
@@ -292,6 +292,7 @@
       q = (q || '').toLowerCase();
       $('#docList').innerHTML = S.documents.map((g) => {
         const items = g.items.filter((i) => !q || i[0].toLowerCase().includes(q));
+        if (!g.items.length) return q ? '' : `<section class="doc-group"><h2>${esc(g.group)}</h2></section>`;
         if (!items.length) return '';
         return `<section class="doc-group"><h2>${esc(g.group)}</h2><div class="docs">${items.map(docCard).join('')}</div></section>`;
       }).join('') || '<div class="empty">Nothing matches that search.</div>';
@@ -303,19 +304,9 @@
   const wm = '<img class="wm" src="assets/unsc-logo.png" alt="">';
   const paperFoot = () => `<div class="paper-foot"><img src="assets/unsc-logo.png" alt="">UEPRIM MUN IV EDITION</div>`;
   function viewProcedure() {
-    const P = S.procedure;
-    const rc = ([t, d, ex]) => `<div class="rule-card"><h4>${esc(t)}</h4><p>${esc(d)}</p>${ex ? `<div class="ex">${esc(ex)}</div>` : ''}</div>`;
-    app.innerHTML = shell(`${pageHead('', 'Rules of Procedure', `<a class="btn btn-ghost" href="docs/motions-and-points-full.pdf" target="_blank" rel="noopener">${I.dl} Full motions sheet</a>`)}
-      <div class="toc"><a href="#/procedure" data-jump="flow">How a session flows</a><a href="#/procedure" data-jump="points">Points and replies</a><a href="#/procedure" data-jump="motions">Motions</a><a href="#/procedure" data-jump="docs">Resolutions and amendments</a><a href="#/procedure" data-jump="voting">Voting and the VETO</a><a href="#/procedure" data-jump="conduct">Conduct and sanctions</a></div>
-      <div class="paper">${wm}<h2>Rules of Procedure</h2><p class="indent">${esc(P.intro)}</p>
-        <h3 id="flow">How a session flows</h3><ol class="flow">${P.flow.map(([t, d]) => `<li><div><b>${esc(t)}</b>${esc(d)}</div></li>`).join('')}</ol>
-        <h3 id="points">Points and replies</h3>${P.points.map(rc).join('')}
-        <h3 id="motions">Motions you will use most</h3>${P.motions.map(rc).join('')}
-        <h3 id="docs">Resolutions, declarations and amendments</h3>${P.documents.map((p) => `<p class="indent">${esc(p)}</p>`).join('')}
-        <h3 id="voting">Voting procedure and the VETO</h3>${P.voting.map((p) => `<p class="indent">${esc(p)}</p>`).join('')}
-        <h3 id="conduct">Conduct, dress code and sanctions</h3>${P.conduct.map((p) => `<p class="indent">${esc(p)}</p>`).join('')}
-        ${paperFoot()}</div>`, '#/procedure');
-    $$('[data-jump]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); document.getElementById(a.dataset.jump).scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
+    app.innerHTML = shell(`${pageHead('', 'Rules of Procedure')}
+      <div class="panel soon"><h2>Coming soon!</h2></div>
+      <section class="doc-group"><h2>Motions and points</h2><div class="docs">${docCard(['Full Motions and Points sheet', 'docs/motions-and-points-full.pdf'])}</div></section>`, '#/procedure');
   }
 
   /* ---------------- SESSIONS ---------------- */
@@ -330,10 +321,10 @@
   function viewContacts() {
     app.innerHTML = shell(`${pageHead('', 'Contacts')}
       <div class="contacts">${S.contacts.map((d) => `<div class="contact">
-        <div class="row"><span class="role">${esc(d.role)}</span><span class="inst">Institutional account</span></div>
+        <div class="row"><span class="role">${esc(d.role)}</span></div>
         <div class="cname">${esc(d.name)}</div>
         <div class="cmail">${esc(d.email)}</div>
-        <div class="cbtns"><a class="btn btn-primary" href="https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(d.email)}" target="_blank" rel="noopener">Write in Outlook ${I.arrow}</a><button class="btn btn-ghost" data-copy="${esc(d.email)}">Copy</button></div>
+        <div class="cbtns"><button class="btn btn-primary" data-copy="${esc(d.email)}">Copy email</button></div>
       </div>`).join('')}</div>`, '#/contacts');
     $$('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
       try { await navigator.clipboard.writeText(b.dataset.copy); toast('Email copied'); } catch { toast(b.dataset.copy); }
@@ -344,6 +335,7 @@
   const FOLDERS = [['all', 'All notes'], ['general', 'General'], ['topicA', 'Topic A'], ['topicB', 'Topic B'], ['speech', 'Speeches'], ['clauses', 'Clauses'], ['pinned', 'Pinned']];
   const folderName = (k) => (FOLDERS.find((f) => f[0] === k) || [k, 'General'])[1];
   async function viewNotes() {
+    if (isAdmin()) { location.hash = '#/presidency'; return; }
     const u = session.user;
     let notes = [];
     app.innerHTML = shell('<p>Loading your notes...</p>', '#/notes');
@@ -483,8 +475,8 @@
           <form id="sf" class="form-grid">
             <div><label class="f">Delegation</label><select class="input" id="sc" required><option value="">Choose</option>${countryOpts}</select></div>
             <div><label class="f">Type</label><select class="input" id="st"><option value="written">Written warning</option><option value="formal">Formal warning</option></select></div>
-            <div><label class="f">Session or day</label><input class="input" id="sd" placeholder="Day 19"></div>
-            <div style="grid-column:1/-1"><label class="f">Reason</label><input class="input" id="sr" required placeholder="What happened, in one or two sentences"></div>
+            <div><label class="f">Session or day</label><input class="input" id="sd" placeholder="Write..."></div>
+            <div style="grid-column:1/-1"><label class="f">Reason</label><input class="input" id="sr" required placeholder="Write..."></div>
             <div><button class="btn btn-gold" type="submit">Record sanction</button></div></form></div>
           <div class="panel"><h2>Where every delegation stands</h2><p class="sub">Formal counts include every pair of written warnings.</p><div class="tally">${tally}</div>
           <div class="table-wrap"><table class="t"><thead><tr><th>Delegation</th><th>Type</th><th>Reason</th><th>Day</th><th>By</th><th></th></tr></thead><tbody>
@@ -535,7 +527,7 @@
         const ranking = ROSTER.map((c) => ({ c, a: avg(c.id), n: list.filter((e) => e.country === c.id).length })).filter((x) => x.a != null).sort((a, b) => b.a - a.a);
         box.innerHTML = `<div class="panel"><h2>Evaluate a delegate</h2><p class="sub">Official UNSC Delegate Evaluation rubric, 2 to 8 per criterion, total out of 40.</p>
           <form id="ef"><div class="form-grid"><div><label class="f">Delegation</label><select class="input" id="ec" required><option value="">Choose</option>${countryOpts}</select></div>
-            <div><label class="f">Topic</label><input class="input" id="et" placeholder="Mock II, Red Sea"></div><div><label class="f">Day</label><input class="input" id="ed" placeholder="Day 19"></div></div>
+            <div><label class="f">Topic</label><input class="input" id="et" placeholder="Write..."></div><div><label class="f">Day</label><input class="input" id="ed" placeholder="Write..."></div></div>
             <div style="margin:12px 0">${CRITERIA.map(([k, t, d]) => `<div class="score-row"><div><b>${t}</b><small>${d}</small></div><select class="input" data-k="${k}">${[2, 3, 4, 5, 6, 7, 8].map((v) => `<option ${v === 6 ? 'selected' : ''}>${v}</option>`).join('')}</select></div>`).join('')}</div>
             <div class="form-grid"><div><label class="f">Voluntary initiative</label><select class="input" id="e1"><option value="I">I, independent</option><option value="P">P, prompted</option><option value="N/O">N/O, no observation</option></select></div>
             <div><label class="f">Procedural independence</label><select class="input" id="e2"><option value="I">I, independent</option><option value="P">P, prompted</option><option value="N/O">N/O, no observation</option></select></div></div>
@@ -567,8 +559,8 @@
         if (!box.isConnected) return;
         const evs = Array.isArray(evRaw) ? evRaw : S.events.map((e) => ({ ...e, id: uid() }));
         box.innerHTML = `<div class="panel"><h2>Events on Home</h2>
-          <form id="evf"><div class="form-grid"><div><label class="f">Title</label><input class="input" id="et1" required placeholder="Day 19: Mock session"></div>
-            <div><label class="f">When and where</label><input class="input" id="et2" placeholder="Tuesday 1 December, Aula 18, 3:15 PM"></div></div>
+          <form id="evf"><div class="form-grid"><div><label class="f">Title</label><input class="input" id="et1" required placeholder="Write..."></div>
+            <div><label class="f">When and where</label><input class="input" id="et2" placeholder="Write..."></div></div>
             <div class="field" style="margin-top:10px"><label class="f">Description</label><textarea class="input" id="et3" rows="3"></textarea></div>
             <button class="btn btn-gold" type="submit">Add event</button></form>
           <div class="table-wrap" style="margin-top:14px"><table class="t"><thead><tr><th>Event</th><th>When</th><th></th></tr></thead><tbody>

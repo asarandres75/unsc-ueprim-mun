@@ -31,7 +31,6 @@ window.SITE = {
     { group: 'Start here', items: [
       ['Security Council Handbook', 'docs/unsc-handbook.pdf'],
       ['Estatuto General Oficial 2026–2027', 'docs/estatuto-general-oficial.pdf'],
-      ['Handbook bibliography', 'docs/unsc-bibliography.pdf'],
     ]},
     { group: 'Guides', items: [
       ['Opening Speech Writing Guide', 'docs/opening-speech-guide.pdf'],
@@ -58,24 +57,16 @@ window.SITE = {
       ['Declaration format', 'docs/declaration-format.pdf'],
       ['Formato de declaración (ejemplo en español)', 'docs/declaracion-formato-ejemplo.pdf'],
       ['Statement on the Exercise of the VETO', 'docs/veto-statement-format.pdf'],
-      ['Delegate note paper', 'docs/delegate-note-paper.pdf'],
     ]},
     { group: 'Mock sessions', items: [
       ['The Situation in Myanmar, background guide', 'docs/myanmar-background.pdf'],
       ['UNSC Myanmar Newspaper', 'docs/myanmar-newspaper.pdf'],
-      ['Paper 1: Spillover Assessment', 'docs/myanmar-paper-1-spillover.pdf'],
-      ['Paper 2: Field Report', 'docs/myanmar-paper-2-field-report.pdf'],
       ['Myanmar Draft Resolution A', 'docs/myanmar-resolution-a.pdf'],
       ['Myanmar Draft Resolution A with Presidency notes', 'docs/myanmar-resolution-a-notes.pdf'],
       ['Myanmar Draft Resolution B', 'docs/myanmar-resolution-b.pdf'],
       ['Myanmar Draft Resolution B with Presidency notes', 'docs/myanmar-resolution-b-notes.pdf'],
     ]},
-    { group: 'Other', items: [
-      ['Topic A at a glance', 'docs/topic-a-diagram.png'],
-      ['Topic B at a glance', 'docs/topic-b-diagram.png'],
-      ['How Topic A and Topic B connect', 'docs/topic-a-b-connection.png'],
-      ['UNSC placards', 'docs/unsc-placards.pdf'],
-    ]},
+    { group: 'Other', items: [] },
   ],
 
   /* ---------- PROCEDURE ---------- */

@@ -4,7 +4,7 @@ The website of the United Nations Security Council committee at UEPRIM-MUN. Dele
 
 ## How to sign in
 
-**Delegates** choose their delegation and type a personal PIN of at least four characters. The first PIN typed for a delegation becomes its PIN, which is what keeps each delegation's notes private. If someone forgets it, the Presidency can reset it from Presidency Only, then Delegations.
+**Delegates** choose their delegation and type the PIN the Presidency gave them. The Presidency sets or changes each PIN from Presidency Only, then Delegations, and a delegation cannot sign in until it has one. Changing a PIN keeps the delegation's notes.
 
 **Presidency** chooses President, Vice-President or Secretary and types the Presidency code.
 

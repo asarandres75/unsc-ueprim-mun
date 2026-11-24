@@ -1,4 +1,5 @@
 const L = require('./_lib');
+const ROSTER = require('../public/js/roster.json');
 
 // Shared documents and who may read/write them.
 const ADMIN_KEYS = ['sanctions', 'internal', 'evaluations', 'attendance'];
@@ -60,9 +61,19 @@ module.exports = async (req, res) => {
       }
     }
 
-    if (key === 'resetpin' && req.method === 'POST' && isAdmin) {
+    if (key === 'pins' && req.method === 'GET' && isAdmin) {
+      const out = {};
+      for (const c of ROSTER) out[c.id] = Boolean(await L.getJSON('pin:' + c.id, null));
+      return L.send(res, 200, { value: out });
+    }
+
+    if (key === 'setpin' && req.method === 'POST' && isAdmin) {
       const b = await L.readBody(req);
-      await L.del('pin:' + String(b.country || ''));
+      const id = String(b.country || '');
+      const pin = String(b.pin || '').trim();
+      if (!ROSTER.some((c) => c.id === id)) return L.send(res, 400, { error: 'Unknown delegation.' });
+      if (pin.length < 4) return L.send(res, 400, { error: 'A PIN needs at least 4 characters.' });
+      await L.setJSON('pin:' + id, { hash: L.hashPin(pin, id), created: Date.now() });
       return L.send(res, 200, { ok: true });
     }
 

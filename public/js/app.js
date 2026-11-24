@@ -160,8 +160,7 @@
         <div class="field"><label class="f" for="country">Delegation</label>
           <select class="input" id="country" required><option value="">Choose your delegation</option>${opts}</select></div>
         <div class="field"><label class="f" for="pin">Personal PIN</label>
-          <input class="input" id="pin" type="password" required minlength="4" autocomplete="current-password" placeholder="Enter your PIN">
-          <div class="hint">First time here? The PIN you type now becomes your delegation’s PIN.</div></div>` : `
+          <input class="input" id="pin" type="password" required minlength="4" autocomplete="current-password" placeholder="Enter your PIN"></div>` : `
         <div class="field"><label class="f" for="member">Member</label>
           <select class="input" id="member"><option>President</option><option selected>Vice-President</option><option>Secretary</option></select></div>
         <div class="field"><label class="f" for="code">Code</label>
@@ -186,7 +185,6 @@
         session = { token: j.token, user: j.user, storage: j.storage };
         ls.set('unsc.session', session);
         if (role === 'delegate') ls.set('unsc.lastCountry', body.country);
-        if (j.firstTime) toast('Your PIN is now set. Keep it somewhere safe.');
         const target = role === 'presidency' ? '#/presidency' : '#/';
         if (location.hash === target) render(); else location.hash = target;
       } catch (err) {
@@ -597,13 +595,25 @@
     }
 
     if (tab === 'delegations') {
-      box.innerHTML = `<div class="panel"><h2>Delegations and PINs</h2><p class="sub">If a delegate forgets their PIN, reset it here and the next PIN they type becomes the new one. Their notes are kept.</p>
-        <div class="table-wrap"><table class="t"><thead><tr><th>Delegation</th><th>Official name</th><th>Seat</th><th></th></tr></thead><tbody>
-        ${ROSTER.map((c) => `<tr><td>${flag(c.iso)}<b>${esc(c.short)}</b></td><td>${esc(c.name)}</td><td>${['china','france','russia','uk','usa'].includes(c.id) ? 'Permanent' : 'Non-permanent'}</td><td><button class="btn btn-ghost btn-sm" data-reset="${c.id}" ${store.online() ? '' : 'disabled title="Needs the online database"'}>Reset PIN</button></td></tr>`).join('')}</tbody></table></div></div>`;
-      $$('[data-reset]', box).forEach((b) => b.onclick = async () => {
-        if (b.dataset.sure !== '1') { b.dataset.sure = '1'; b.textContent = 'Confirm reset'; return; }
-        try { await api('/api/data?key=resetpin', { method: 'POST', body: JSON.stringify({ country: b.dataset.reset }) }); toast('PIN reset for ' + country(b.dataset.reset).short); b.textContent = 'Done'; }
-        catch (e) { toast(e.message); }
+      let has = {};
+      if (store.online()) { try { has = (await api('/api/data?key=pins')).value || {}; } catch {} }
+      if (!box.isConnected) return;
+      const off = store.online() ? '' : 'disabled title="Needs the online database"';
+      box.innerHTML = `<div class="panel"><h2>Delegations and PINs</h2><p class="sub">Type a PIN and press Set PIN to give it to a delegation. A new PIN replaces the old one, and their notes are kept.</p>
+        <div class="table-wrap"><table class="t"><thead><tr><th>Delegation</th><th>Official name</th><th>Seat</th><th>PIN</th></tr></thead><tbody>
+        ${ROSTER.map((c) => `<tr><td>${flag(c.iso)}<b>${esc(c.short)}</b></td><td>${esc(c.name)}</td><td>${['china','france','russia','uk','usa'].includes(c.id) ? 'Permanent' : 'Non-permanent'}</td>
+          <td style="white-space:nowrap"><span class="hint" data-state="${c.id}" style="display:inline-block;min-width:56px">${has[c.id] ? 'Set' : 'Not set'}</span><input class="input" style="width:120px;display:inline-block" data-pin="${c.id}" placeholder="New PIN" autocomplete="off" ${off}> <button class="btn btn-gold btn-sm" data-setpin="${c.id}" ${off}>Set PIN</button></td></tr>`).join('')}</tbody></table></div></div>`;
+      $$('[data-setpin]', box).forEach((b) => b.onclick = async () => {
+        const id = b.dataset.setpin;
+        const inp = $(`[data-pin="${id}"]`, box);
+        const pin = inp.value.trim();
+        if (pin.length < 4) { toast('A PIN needs at least 4 characters.'); return; }
+        try {
+          await api('/api/data?key=setpin', { method: 'POST', body: JSON.stringify({ country: id, pin }) });
+          toast('PIN set for ' + country(id).short);
+          inp.value = '';
+          $(`[data-state="${id}"]`, box).textContent = 'Set';
+        } catch (e) { toast(e.message); }
       });
       return;
     }

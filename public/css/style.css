@@ -372,3 +372,5 @@ table.t td { padding: 9px 8px; border-bottom: 1px solid #edf1f7; vertical-align:
 .panel.soon { text-align: center; padding: 48px 20px; }
 .panel.soon h2 { margin: 0; font-size: 28px; color: var(--navy-800); }
 .docs-empty { color: var(--ink-soft); margin: 0; }
+.tl.upcoming { opacity: .5; background: #f3f5f9; border-style: dashed; }
+.tl.upcoming::before { background: #b8c2d4; }

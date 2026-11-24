@@ -313,7 +313,7 @@
   function viewSessions() {
     const docName = (p) => { for (const g of S.documents) for (const i of g.items) if (i[1] === p) return i[0]; return p.split('/').pop(); };
     app.innerHTML = shell(`${pageHead('', 'PRE-MUN Sessions')}
-      <div class="timeline">${S.sessions.days.map((d) => `<div class="tl"><div class="d">Day ${esc(d.day)}</div><h3>${esc(d.title)}</h3><p>${esc(d.text)}</p>
+      <div class="timeline">${S.sessions.days.map((d) => `<div class="tl${d.upcoming ? ' upcoming' : ''}"><div class="d">Day ${esc(d.day)}</div><h3>${esc(d.title)}</h3><p>${esc(d.text)}</p>
         ${d.docs ? `<div class="docs-inline">${d.docs.map((p) => `<a class="pill" href="${p}" target="_blank" rel="noopener">${I.dl} ${esc(docName(p))}</a>`).join('')}</div>` : ''}</div>`).join('')}</div>`, '#/sessions');
   }
 
@@ -452,7 +452,7 @@
   async function viewPresidency(sub) {
     if (!isAdmin()) { location.hash = '#/'; return; }
     const tab = sub || 'sanctions';
-    const tabs = [['sanctions', 'Sanctions'], ['internal', 'Internal notes'], ['evaluations', 'Evaluations'], ['notice', 'Events and announcement'], ['delegations', 'Delegations'], ['files', 'Presidency files']];
+    const tabs = [['sanctions', 'Sanctions'], ['internal', 'Internal notes'], ['evaluations', 'Evaluations'], ['notice', 'Events and announcement'], ['delegations', 'Delegations']];
     app.innerHTML = shell(`
       <section class="hub-head admin-head"><img class="bgem" src="assets/emblem-light.png" alt=""><div class="k">${esc(session.user.name)}</div><h1>Presidency Only</h1><div class="gold-line"></div></section>
       <div class="tabs">${tabs.map(([k, t]) => `<a href="#/presidency/${k}" class="${k === tab ? 'on' : ''}">${t}</a>`).join('')}</div>

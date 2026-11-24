@@ -64,7 +64,10 @@ window.SITE = {
       ['Myanmar Draft Resolution B', 'docs/myanmar-resolution-b.pdf'],
       ['Myanmar Draft Resolution B with Presidency notes', 'docs/myanmar-resolution-b-notes.pdf'],
     ]},
-    { group: 'Other', items: [] },
+    { group: 'Other', items: [
+      ['Day 18 presentation', 'docs/day-18-presentation.pdf'],
+      ['Strategy session instructions', 'docs/strategy-session-instructions.pdf'],
+    ]},
   ],
 
   /* ---------- PROCEDURE ---------- */
@@ -133,7 +136,8 @@ window.SITE = {
       { day: '10–13', title: 'Cyberattacks mini-simulation and resolution workshop', text: 'A 45-minute mini-session on cyberattacks against critical infrastructure where delegates practised the Guest Speakers’ List and rounds of extraordinary questions, more work on position papers for both topics, and a first workshop on how resolutions and working papers are built.', docs: ['docs/resolution-guide.pdf'] },
       { day: '14–16', title: 'Mock Simulation I: Myanmar', text: 'Our first full simulation over three sessions, on the protection of civilians, ethnic conflict and the restoration of democratic governance in Myanmar. It closed with a Tour de Table, two competing draft resolutions, one from Haiti and the United States and one from China, and a formal vote.', docs: ['docs/myanmar-background.pdf', 'docs/myanmar-resolution-a.pdf', 'docs/myanmar-resolution-b.pdf'] },
       { day: '17', title: 'Advanced resolution writing and the VETO', text: 'Feedback on both Myanmar resolutions, a class on resolutions, declarations and amendments, the VETO and how it is presented, and a workshop where groups found and fixed the flaws in real clauses.', docs: ['docs/draft-resolution-guide.pdf', 'docs/declaration-guide.pdf', 'docs/veto-statement-format.pdf'] },
-      { day: '18', title: 'Strategy session', text: 'Individual and small-group strategy meetings to refine opening speeches and prepare for specific voting scenarios, a second look at Topics A and B and the new website, a presentation on how national interests shape negotiations, a diplomatic roundtable, and a short class for the P5 on how the Motion to exercise the VETO works.', docs: ['docs/unsc-handbook.pdf', 'docs/veto-statement-format.pdf'] },
+      { day: '18', title: 'Strategy session', text: 'Individual and small-group strategy meetings to refine opening speeches and prepare for specific voting scenarios, a second look at Topics A and B and the new website, a presentation on how national interests shape negotiations, a diplomatic roundtable, and a short class for the P5 on how the Motion to exercise the VETO works.', docs: ['docs/day-18-presentation.pdf', 'docs/strategy-session-instructions.pdf', 'docs/veto-statement-format.pdf'] },
+      { day: '19–20', title: 'Mock Simulation II', text: 'Coming soon.', upcoming: true },
     ],
   },
 

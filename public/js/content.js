@@ -12,8 +12,8 @@ window.SITE = {
 
   /* ---------- CONTACTS ---------- */
   contacts: [
-    { role: 'President', name: 'Jared Montero Tenesaca', email: 'st-jmontero@ueprim.edu.ec' },
-    { role: 'Vice-President', name: 'Andrés Aguilar Rizzo', email: 'st-aaguilar17@ueprim.edu.ec' },
+    { role: 'Chair', name: 'Jared Montero Tenesaca', email: 'st-jmontero@ueprim.edu.ec' },
+    { role: 'Co-Chair', name: 'Andrés Aguilar Rizzo', email: 'st-aaguilar17@ueprim.edu.ec' },
     { role: 'Secretary', name: 'Joaquín Tapia', email: 'st-jtapia3@ueprim.edu.ec' },
   ],
 

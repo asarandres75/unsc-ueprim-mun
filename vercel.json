@@ -1,0 +1,11 @@
+{
+  "outputDirectory": "public",
+  "functions": {
+    "api/private.js": {
+      "includeFiles": "private/**"
+    },
+    "api/login.js": {
+      "includeFiles": "public/js/roster.json"
+    }
+  }
+}

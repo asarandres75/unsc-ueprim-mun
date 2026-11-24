@@ -1,0 +1,13 @@
+[
+  {"id":"china","iso":"cn","short":"China","name":"The People's Republic of China","p5":true},
+  {"id":"colombia","iso":"co","short":"Colombia","name":"The Republic of Colombia","p5":false},
+  {"id":"drc","iso":"cd","short":"DR Congo","name":"The Democratic Republic of the Congo","p5":false},
+  {"id":"france","iso":"fr","short":"France","name":"The French Republic","p5":true},
+  {"id":"haiti","iso":"ht","short":"Haiti","name":"The Republic of Haiti","p5":false},
+  {"id":"latvia","iso":"lv","short":"Latvia","name":"The Republic of Latvia","p5":false},
+  {"id":"liberia","iso":"lr","short":"Liberia","name":"The Republic of Liberia","p5":false},
+  {"id":"pakistan","iso":"pk","short":"Pakistan","name":"The Islamic Republic of Pakistan","p5":false},
+  {"id":"russia","iso":"ru","short":"Russia","name":"The Russian Federation","p5":true},
+  {"id":"uk","iso":"gb","short":"United Kingdom","name":"The United Kingdom of Great Britain and Northern Ireland","p5":true},
+  {"id":"usa","iso":"us","short":"United States","name":"The United States of America","p5":true}
+]

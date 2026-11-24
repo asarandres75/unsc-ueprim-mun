@@ -54,7 +54,6 @@ window.SITE = {
       ['Position paper template', 'docs/position-paper-template.docx'],
       ['Resolution format', 'docs/resolution-format.docx'],
       ['Declaration format', 'docs/declaration-format.pdf'],
-      ['Formato de declaración (ejemplo en español)', 'docs/declaracion-formato-ejemplo.pdf'],
       ['Statement on the Exercise of the VETO', 'docs/veto-statement-format.pdf'],
     ]},
     { group: 'Mock sessions', items: [

@@ -68,6 +68,8 @@ window.SITE = {
     { group: 'Other', items: [
       ['Day 18 presentation', 'docs/day-18-presentation.pdf'],
       ['Strategy session instructions', 'docs/strategy-session-instructions.pdf'],
+      ['Resolution with flaws', 'docs/workshop-resolution-with-flaws.pdf'],
+      ['Declaration with flaws', 'docs/workshop-declaration-with-flaws.pdf'],
     ]},
   ],
 

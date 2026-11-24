@@ -595,11 +595,13 @@
     if (tab === 'delegations') {
       let has = {};
       if (store.online()) { try { has = (await api('/api/data?key=pins')).value || {}; } catch {} }
+      let names = {};
+      try { names = await fetch('/api/private?file=delegates.json&t=' + encodeURIComponent(session.token)).then((r) => r.ok ? r.json() : {}); } catch {}
       if (!box.isConnected) return;
       const off = store.online() ? '' : 'disabled title="Needs the online database"';
       box.innerHTML = `<div class="panel"><h2>Delegations and PINs</h2><p class="sub">Type a PIN and press Set PIN to give it to a delegation. A new PIN replaces the old one, and their notes are kept.</p>
-        <div class="table-wrap"><table class="t"><thead><tr><th>Delegation</th><th>Official name</th><th>Seat</th><th>PIN</th></tr></thead><tbody>
-        ${ROSTER.map((c) => `<tr><td>${flag(c.iso)}<b>${esc(c.short)}</b></td><td>${esc(c.name)}</td><td>${['china','france','russia','uk','usa'].includes(c.id) ? 'Permanent' : 'Non-permanent'}</td>
+        <div class="table-wrap"><table class="t"><thead><tr><th>Delegation</th><th>Delegate</th><th>Seat</th><th>PIN</th></tr></thead><tbody>
+        ${ROSTER.map((c) => `<tr><td>${flag(c.iso)}<b>${esc(c.short)}</b><br><small>${esc(c.name)}</small></td><td>${esc(names[c.id] || '')}</td><td>${['china','france','russia','uk','usa'].includes(c.id) ? 'Permanent' : 'Non-permanent'}</td>
           <td style="white-space:nowrap"><span class="hint" data-state="${c.id}" style="display:inline-block;min-width:56px">${has[c.id] ? 'Set' : 'Not set'}</span><input class="input" style="width:120px;display:inline-block" data-pin="${c.id}" placeholder="New PIN" autocomplete="off" ${off}> <button class="btn btn-gold btn-sm" data-setpin="${c.id}" ${off}>Set PIN</button></td></tr>`).join('')}</tbody></table></div></div>`;
       $$('[data-setpin]', box).forEach((b) => b.onclick = async () => {
         const id = b.dataset.setpin;

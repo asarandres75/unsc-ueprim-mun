@@ -28,11 +28,10 @@ window.SITE = {
   /* ---------- DOCUMENTS ----------
      Each line is [title, file]. Cover thumbnails live in /thumbs with the same name. */
   documents: [
-    { group: 'Templates', items: [
-      ['Position paper template', 'docs/position-paper-template.docx'],
-      ['Resolution format', 'docs/resolution-format.docx'],
-      ['Declaration format', 'docs/declaration-format.pdf'],
-      ['Statement on the Exercise of the VETO', 'docs/veto-statement-format.pdf'],
+    { group: 'Start here', items: [
+      ['Security Council Handbook', 'docs/unsc-handbook.pdf'],
+      ['Estatuto General Oficial 2026–2027', 'docs/estatuto-general-oficial.pdf'],
+      ['Handbook bibliography', 'docs/unsc-bibliography.pdf'],
     ]},
     { group: 'Guides', items: [
       ['Opening Speech Writing Guide', 'docs/opening-speech-guide.pdf'],
@@ -44,20 +43,38 @@ window.SITE = {
       ['All Motions and Points', 'docs/motions-and-points-full.pdf'],
       ['Motions and Points (short class version)', 'docs/motions-and-points-short.pdf'],
     ]},
-    { group: 'Examples and notes', items: [
+    { group: 'Examples', items: [
       ['Position paper example: Algeria', 'docs/position-paper-example-algeria.pdf'],
+      ['Opening speech example: Lesotho', 'docs/opening-speech-example-lesotho.pdf'],
+      ['Country research example: China', 'docs/country-research-china.pdf'],
       ['Resolution format, worked example', 'docs/resolution-format-example.pdf'],
       ['Draft Resolution B example', 'docs/draft-resolution-example.pdf'],
       ['Declaration example: Russian Federation', 'docs/declaration-example-russia.pdf'],
-      ['Myanmar Draft Resolution A', 'docs/myanmar-resolution-a.pdf'],
-      ['Myanmar Draft Resolution B', 'docs/myanmar-resolution-b.pdf'],
+      ['Russian declaration with Presidency notes', 'docs/declaration-russia-notes.pdf'],
     ]},
-    { group: 'Other', items: [
-      ['Security Council Handbook', 'docs/unsc-handbook.pdf'],
-      ['Estatuto General Oficial 2026–2027', 'docs/estatuto-general-oficial.pdf'],
-      ['UNSC placards', 'docs/unsc-placards.pdf'],
+    { group: 'Templates', items: [
+      ['Position paper template', 'docs/position-paper-template.docx'],
+      ['Resolution format', 'docs/resolution-format.docx'],
+      ['Declaration format', 'docs/declaration-format.pdf'],
+      ['Formato de declaración (ejemplo en español)', 'docs/declaracion-formato-ejemplo.pdf'],
+      ['Statement on the Exercise of the VETO', 'docs/veto-statement-format.pdf'],
+      ['Delegate note paper', 'docs/delegate-note-paper.pdf'],
+    ]},
+    { group: 'Mock sessions', items: [
       ['The Situation in Myanmar, background guide', 'docs/myanmar-background.pdf'],
       ['UNSC Myanmar Newspaper', 'docs/myanmar-newspaper.pdf'],
+      ['Paper 1: Spillover Assessment', 'docs/myanmar-paper-1-spillover.pdf'],
+      ['Paper 2: Field Report', 'docs/myanmar-paper-2-field-report.pdf'],
+      ['Myanmar Draft Resolution A', 'docs/myanmar-resolution-a.pdf'],
+      ['Myanmar Draft Resolution A with Presidency notes', 'docs/myanmar-resolution-a-notes.pdf'],
+      ['Myanmar Draft Resolution B', 'docs/myanmar-resolution-b.pdf'],
+      ['Myanmar Draft Resolution B with Presidency notes', 'docs/myanmar-resolution-b-notes.pdf'],
+    ]},
+    { group: 'Other', items: [
+      ['Topic A at a glance', 'docs/topic-a-diagram.png'],
+      ['Topic B at a glance', 'docs/topic-b-diagram.png'],
+      ['How Topic A and Topic B connect', 'docs/topic-a-b-connection.png'],
+      ['UNSC placards', 'docs/unsc-placards.pdf'],
     ]},
   ],
 
@@ -145,6 +162,22 @@ window.SITE = {
       ['Workshop: resolution with flaws', 'workshop-resolution-with-flaws.pdf'],
       ['Workshop: declaration with flaws', 'workshop-declaration-with-flaws.pdf'],
       ['Seating plan', 'seating-plan.png'],
+      ['Day 18 room layout', 'room-layout-day-18.png'],
+    ]},
+    { group: 'Feedback', items: [
+      ['Opening speech feedback (Topic A)', 'opening-speech-feedback.pdf'],
+      ['Speech feedback: France, Latvia, Russia, United States', 'speech-feedback-france-latvia-russia-usa.pdf'],
+    ]},
+    { group: 'Delegate submissions', items: [
+      ['Position paper: China', 'position-paper-china.pdf'],
+      ['Position paper: DR Congo', 'position-paper-drc.pdf'],
+      ['Position paper: Haiti', 'position-paper-haiti.pdf'],
+      ['Position paper: Pakistan', 'position-paper-pakistan.pdf'],
+      ['Opening speech: China, Topic A', 'opening-speech-china-a.pdf'],
+      ['Opening speech: China, Topic B', 'opening-speech-china-b.pdf'],
+      ['Opening speech: DR Congo, Topic B', 'opening-speech-drc-b.pdf'],
+      ['Opening speech: Haiti, Topic B', 'opening-speech-haiti-b.pdf'],
+      ['Opening speech: Pakistan, Topic B', 'opening-speech-pakistan-b.pdf'],
     ]},
   ],
 };

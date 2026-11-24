@@ -44,7 +44,7 @@ img { max-width: 100%; display: block; }
 .edition { letter-spacing: .1em; font-weight: 500; font-size: 15px; opacity: .92; text-transform: uppercase; }
 .lockup { display: flex; align-items: center; gap: clamp(16px, 2.6vw, 30px); margin-top: 22px; }
 .lockup img { width: clamp(104px, 13vw, 170px); filter: brightness(0) invert(1); }
-.lockup .rule { width: 2px; align-self: stretch; background: #fff; opacity: .95; min-height: 110px; }
+.lockup .rule { width: 2px; flex: 0 0 2px; align-self: stretch; background: #fff; opacity: .95; min-height: 110px; }
 .lockup h1 { margin: 0; font-weight: 800; line-height: .95; letter-spacing: -.01em; font-size: clamp(38px, 5.6vw, 72px); }
 .lockup .un { margin-top: 12px; font-size: clamp(15px, 1.6vw, 20px); font-weight: 500; opacity: .95; }
 @media (max-width: 860px) {
@@ -55,7 +55,7 @@ img { max-width: 100%; display: block; }
 .skyline svg { width: 100%; height: 100%; display: block; }
 .gold-rule { height: 4px; background: linear-gradient(90deg, #b48c40, var(--gold), #e6cc8f, var(--gold), #b48c40); }
 .cover-foot { position: relative; z-index: 2; background: #fff; display: flex; justify-content: center; padding: 16px 16px; }
-.cover-foot img { height: 52px; width: auto; image-rendering: auto; }
+.cover-foot img { height: 62px; width: auto; image-rendering: auto; }
 
 /* login card on the cover */
 .login-card {
@@ -325,7 +325,7 @@ table.t td { padding: 9px 8px; border-bottom: 1px solid #edf1f7; vertical-align:
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 .site-foot { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 26px 16px 34px; border-top: 1px solid var(--line); background: #fff; }
-.site-foot img { height: 40px; margin: 0 auto 8px; }
+.site-foot img { height: 48px; margin: 0 auto 8px; }
 
 /* ---------- round 2 ---------- */
 .muted { color: var(--ink-soft); }

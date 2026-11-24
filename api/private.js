@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const L = require('./_lib');
 
-const TYPES = { '.pdf': 'application/pdf', '.png': 'image/png', '.jpg': 'image/jpeg', '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' };
+const TYPES = { '.pdf': 'application/pdf', '.png': 'image/png', '.jpg': 'image/jpeg', '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', '.json': 'application/json; charset=utf-8' };
 
 module.exports = async (req, res) => {
   const user = L.userFrom(req);

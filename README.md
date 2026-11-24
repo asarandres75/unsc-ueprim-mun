@@ -8,7 +8,7 @@ The website of the United Nations Security Council committee at UEPRIM-MUN. Dele
 
 **Presidency** types the Presidency code.
 
-The default Presidency code is `PresidenciaUNSC2026`. To change it, go to Vercel, open the project, then Settings, then Environment Variables, add `PRESIDENCY_CODE` with the new value and redeploy. The code is checked on the server, so it never appears in the page source.
+The default Presidency code is `UNSCsecuritycouncil0987`. To change it, go to Vercel, open the project, then Settings, then Environment Variables, add `PRESIDENCY_CODE` with the new value and redeploy. The code is checked on the server, so it never appears in the page source.
 
 ## Turning on the online database (needed for notes and sanctions to sync)
 

@@ -1,8 +1,9 @@
 // Shared helpers for the UNSC site API (Vercel serverless functions).
 const crypto = require('crypto');
 
-const PRESIDENCY_CODE = process.env.PRESIDENCY_CODE || 'PresidenciaUNSC2026';
-const SECRET = process.env.SESSION_SECRET || ('unsc-ueprim-' + PRESIDENCY_CODE + '-DelegadosUNSC2026');
+const PRESIDENCY_CODE = process.env.PRESIDENCY_CODE || 'UNSCsecuritycouncil0987';
+// Fixed secret (not tied to the code) so changing the code keeps delegate PINs and sessions working.
+const SECRET = process.env.SESSION_SECRET || 'unsc-ueprim-PresidenciaUNSC2026-DelegadosUNSC2026';
 
 // Upstash Redis over REST. Vercel's Upstash/KV integration sets one of these pairs.
 const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '';

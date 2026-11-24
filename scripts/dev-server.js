@@ -14,8 +14,9 @@ const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/cs
 
 http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
-  let raw = '';
-  for await (const c of req) raw += c;
+  const parts = [];
+  for await (const c of req) parts.push(c);
+  const rawBuf = Buffer.concat(parts); const raw = rawBuf.toString('utf8');
   if (url.pathname === '/__kv') {
     const [cmd, key, val] = JSON.parse(raw);
     let result = null;
@@ -29,7 +30,8 @@ http.createServer(async (req, res) => {
     if (!fs.existsSync(file)) { res.statusCode = 404; return res.end('no fn'); }
     delete require.cache[file];
     req.query = Object.fromEntries(url.searchParams);
-    try { req.body = raw ? JSON.parse(raw) : {}; } catch { req.body = raw; }
+    if ((req.headers['content-type'] || '').includes('octet-stream')) req.body = rawBuf;
+    else { try { req.body = raw ? JSON.parse(raw) : {}; } catch { req.body = raw; } }
     res.status = (c) => { res.statusCode = c; return res; };
     res.json = (o) => { res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify(o)); };
     res.send = (b) => res.end(b);

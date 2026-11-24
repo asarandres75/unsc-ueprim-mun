@@ -40,6 +40,8 @@
     plus: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
     pin: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 3H8v2l1 1v5l-3 3v2h5v5l1 1 1-1v-5h5v-2l-3-3V6l1-1z"/></svg>',
     menu: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+    paperclip: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 11-8.5 8.5a5 5 0 0 1-7-7L14 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L15 7"/></svg>',
+    arrow: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
     dl: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6 10l6 6 6-6M4 20h16"/></svg>',
   };
 
@@ -87,8 +89,8 @@
 
   /* ---------------- shared pieces ---------------- */
   const NAV = [
-    ['#/', 'Home'], ['#/handbook', 'Handbook'], ['#/documents', 'Documents'], ['#/procedure', 'Procedure'],
-    ['#/sessions', 'PRE-MUN'], ['#/mock', 'Mock II'], ['#/dais', 'Dais'], ['#/notes', 'My Notes'],
+    ['#/', 'Home'], ['#/documents', 'Documents'], ['#/procedure', 'Procedure'],
+    ['#/sessions', 'PRE-MUN'], ['#/contacts', 'Contacts'], ['#/notes', 'My Notes'],
   ];
   function shell(inner, route) {
     const u = session.user;
@@ -103,17 +105,14 @@
           <div class="who"><span class="chip-user">${av}<span>${esc(u.role === 'delegate' ? u.short : u.name)}</span></span><button class="linkbtn" id="logoutBtn">Sign out</button></div>
         </nav>
       </div></header>
-      <main>${!store.online() && isAdmin() ? `<div class="banner"><div><b>The online database is not connected yet.</b> Sanctions, internal notes and evaluations are being saved in this browser only, so other members of the dais will not see them. The README explains the two-minute setup in Vercel.</div></div>` : ''}${inner}</main>
-      <footer class="site-foot"><img src="assets/ueprim-logos.png" alt="UEPRIM 50 years and UEPRIM MUN"><div>United Nations Security Council, UEPRIM-MUN ${esc(S.edition)}</div><div>${esc(S.institution)}</div></footer>`;
+      <main>${!store.online() && isAdmin() ? `<div class="banner"><div><b>The online database is not connected.</b> Changes are being saved in this browser only.</div></div>` : ''}${inner}</main>
+      <footer class="site-foot"><img src="assets/ueprim-logos.png" alt="UEPRIM 50 years and UEPRIM MUN"><div>United Nations Security Council, UEPRIM-MUN ${esc(S.edition)}</div></footer>`;
   }
-  function paperFoot() {
-    return `<div class="paper-foot"><img src="assets/unsc-logo.png" alt="">UEPRIM MUN IV EDITION</div>`;
-  }
-  const wm = '<img class="wm" src="assets/unsc-logo.png" alt="">';
   function pageHead(kicker, title, right = '') {
-    return `<div class="page-head"><div><div class="k">${esc(kicker)}</div><h1>${esc(title)}</h1></div>${right}</div>`;
+    return `<div class="page-head"><div>${kicker ? `<div class="k">${esc(kicker)}</div>` : ''}<h1>${esc(title)}</h1></div>${right}</div>`;
   }
   const fileType = (p) => (p.split('.').pop() || '').toUpperCase();
+  const fmtSize = (b) => b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
 
   /* ---------------- COVER / LOGIN ---------------- */
   function skyline() {
@@ -132,23 +131,23 @@
       ${flags}</svg>`;
   }
   function viewLogin() {
-    const opts = ROSTER.map((c) => `<option value="${c.id}">${esc(c.short)}${c.p5 ? ' (P5)' : ''}</option>`).join('');
+    const opts = ROSTER.map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
     app.innerHTML = `
       <section class="cover">
-        <img class="cover-emblem-bg" src="assets/emblem-light.png" alt="">
+        <div class="cover-glow" aria-hidden="true"><img src="assets/emblem-light.png" alt=""></div>
         <div class="cover-inner">
-          <div class="edition">${esc(S.edition)}</div>
-          <div class="lockup"><img src="assets/unsc-logo.png" alt="United Nations emblem"><div class="rule"></div><div><h1>SECURITY<br>COUNCIL</h1><div class="un">United Nations</div></div></div>
-          <div class="cover-title">DELEGATE HUB</div>
-          <p class="cover-sub">Everything you need for the Council in one place, from the handbook and the rules of procedure to your own notebook. Sign in with the code your dais gave you.</p>
+          <div class="cover-left">
+            <div class="edition">${esc(S.edition)}</div>
+            <div class="lockup"><img src="assets/unsc-logo.png" alt="United Nations emblem"><div class="rule"></div><div><h1>SECURITY<br>COUNCIL</h1><div class="un">United Nations</div></div></div>
+          </div>
           <form class="login-card" id="loginForm" autocomplete="on">
-            <div class="seg" role="group" aria-label="Who are you?">
+            <div class="seg" role="group" aria-label="Sign in as">
               <button type="button" data-role="delegate" aria-pressed="true">Delegate</button>
-              <button type="button" data-role="presidency" aria-pressed="false">UNSC Presidency</button>
+              <button type="button" data-role="presidency" aria-pressed="false">Presidency</button>
             </div>
             <div id="roleFields"></div>
             <div class="err" id="loginErr"></div>
-            <button class="btn btn-primary btn-block" type="submit" id="loginBtn">Enter the Council</button>
+            <button class="btn btn-primary btn-block" type="submit" id="loginBtn">Enter</button>
           </form>
         </div>
         <div class="skyline">${skyline()}</div>
@@ -158,19 +157,17 @@
     let role = 'delegate';
     const fields = () => {
       $('#roleFields').innerHTML = role === 'delegate' ? `
-        <div class="field"><label class="f" for="country">Your delegation</label>
-          <select class="input" id="country" required><option value="">Choose your country</option>${opts}</select></div>
-        <div class="field"><label class="f" for="code">Delegate code</label>
-          <input class="input" id="code" type="password" required autocomplete="off" placeholder="The code shared in class"></div>
+        <div class="field"><label class="f" for="country">Delegation</label>
+          <select class="input" id="country" required><option value="">Choose your delegation</option>${opts}</select></div>
         <div class="field"><label class="f" for="pin">Personal PIN</label>
-          <input class="input" id="pin" type="password" required minlength="4" autocomplete="current-password" placeholder="At least 4 characters">
-          <div class="hint">The first time you sign in, the PIN you type becomes yours, and it keeps your notes private from the other delegations.</div></div>` : `
-        <div class="field"><label class="f" for="member">Member of the dais</label>
+          <input class="input" id="pin" type="password" required minlength="4" autocomplete="current-password" placeholder="Enter your PIN">
+          <div class="hint">First time here? The PIN you type now becomes your delegation’s PIN.</div></div>` : `
+        <div class="field"><label class="f" for="member">Member</label>
           <select class="input" id="member"><option>President</option><option selected>Vice-President</option><option>Secretary</option></select></div>
-        <div class="field"><label class="f" for="code">Presidency code</label>
-          <input class="input" id="code" type="password" required autocomplete="off" placeholder="Unlocks sanctions, internal notes and dais files"></div>`;
+        <div class="field"><label class="f" for="code">Code</label>
+          <input class="input" id="code" type="password" required autocomplete="off" placeholder="Enter code"></div>`;
       const saved = ls.get('unsc.lastCountry', '');
-      if (role === 'delegate' && saved) $('#country').value = saved;
+      if (role === 'delegate' && saved && ROSTER.some((c) => c.id === saved)) $('#country').value = saved;
     };
     fields();
     $$('.seg button').forEach((b) => b.addEventListener('click', () => {
@@ -181,122 +178,140 @@
     $('#loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = $('#loginBtn'); btn.disabled = true; btn.textContent = 'Checking...';
-      const body = { role, code: $('#code').value };
+      const body = { role };
       if (role === 'delegate') { body.country = $('#country').value; body.pin = $('#pin').value; }
-      else body.member = $('#member').value;
+      else { body.member = $('#member').value; body.code = $('#code').value; }
       try {
         const j = await api('/api/login', { method: 'POST', body: JSON.stringify(body) });
         session = { token: j.token, user: j.user, storage: j.storage };
         ls.set('unsc.session', session);
         if (role === 'delegate') ls.set('unsc.lastCountry', body.country);
-        if (j.firstTime) toast('Welcome! Your PIN is now set, so keep it somewhere safe.');
+        if (j.firstTime) toast('Your PIN is now set. Keep it somewhere safe.');
         const target = role === 'presidency' ? '#/presidency' : '#/';
         if (location.hash === target) render(); else location.hash = target;
       } catch (err) {
-        $('#loginErr').textContent = err.status ? err.message : 'Could not reach the server. Check your internet connection and try again.';
-      } finally { btn.disabled = false; btn.textContent = 'Enter the Council'; }
+        $('#loginErr').textContent = err.status ? err.message : 'Could not reach the server. Check your connection and try again.';
+      } finally { btn.disabled = false; btn.textContent = 'Enter'; }
     });
   }
 
-  /* ---------------- HOME ---------------- */
+  /* ---------------- HOME: events + public notes ---------------- */
   async function viewHome() {
     const u = session.user;
-    const cards = [
-      ['#/handbook', I.book, 'Official Handbook', 'The letter from the Presidency and the full background for Topics A and B.'],
-      ['#/documents', I.files, 'Document Centre', 'Guides, templates and real examples for every paper you will write.'],
-      ['#/procedure', I.scale, 'Committee Procedure', 'Points, motions, voting and the VETO, explained with the words to say.'],
-      ['#/sessions', I.cal, 'PRE-MUN Sessions', 'What we covered each week and the materials that go with it.'],
-      ['#/mock', I.flagship, 'Mock Simulation II', 'The briefing on maritime security in the Red Sea for Days 19 and 20.'],
-      ['#/dais', I.mail, 'Contact the Dais', 'Who sits at the front of the room and how to reach them by email.'],
-      ['#/notes', I.note, 'My Notes', 'Your private notebook for research, speeches and ideas for clauses.'],
-    ];
-    if (isAdmin()) cards.push(['#/presidency', I.lock, 'Presidency Desk', 'Sanctions, internal notes, evaluations and the dais-only files.', true]);
-    const greet = u.role === 'delegate'
-      ? `Welcome, delegation of ${esc(country(u.id).short)}`
-      : `Welcome back, ${esc(u.name)}`;
+    const myApp = app;
     app.innerHTML = shell(`
       <section class="hub-head"><img class="bgem" src="assets/emblem-light.png" alt="">
-        <div class="k">UEPRIM-MUN, ${esc(S.edition)}</div><h1>Security Council</h1>
-        <p>${greet}. This is the Council’s academic hub, where the handbook, the rules and everything from PRE-MUN live together.</p><div class="gold-line"></div></section>
+        <div class="k">UEPRIM-MUN ${esc(S.edition)}</div><h1>Security Council</h1><div class="gold-line"></div></section>
       <div id="notice"></div>
-      <div class="grid-cards">${cards.map(([h, ic, t, d, adm]) => `
-        <a class="card-link ${adm ? 'admin wide2' : ''} ${h === '#/notes' && !isAdmin() ? 'wide3' : ''}" href="${h}">${adm ? '<span class="tag-lock">Presidency</span>' : ''}<div class="ic">${ic}</div><h3>${t}</h3><p>${d}</p></a>`).join('')}
-      </div>
-      <div id="eventBox"></div>
-      <div id="myRecord"></div>`, '#/');
-    // notice + upcoming event can be edited by the Presidency
-    let notice = null;
-    try { notice = await store.get('notice', null); } catch {}
-    if (!$('#eventBox')) return;
-    const ev = { title: (notice && notice.eventTitle) || S.upcoming.title, when: (notice && notice.eventWhen) || S.upcoming.when, text: (notice && notice.eventText) || S.upcoming.text };
-    if (notice && notice.announcement) $('#notice').innerHTML = `<div class="banner info"><div><b>From the dais.</b> ${esc(notice.announcement)}</div></div>`;
-    $('#eventBox').innerHTML = `<div class="event"><div><div class="k">Upcoming event</div><h3>${esc(ev.title)}</h3><p>${esc(ev.text)}</p><p style="margin-top:6px;font-weight:600;color:var(--navy-700)">${esc(ev.when)}</p></div><a class="btn btn-primary" href="#/mock">Read the briefing</a></div>`;
+      <h2 class="sec-t">Events</h2>
+      <div id="events" class="events"><p class="muted">Loading...</p></div>
+      ${u.role === 'delegate' ? '<div id="myRecord"></div>' : ''}
+      <h2 class="sec-t">Public notes</h2>
+      <form class="panel post-form" id="postForm">
+        <input class="input" id="pTitle" maxlength="140" placeholder="Title">
+        <textarea class="input" id="pText" rows="3" maxlength="8000" placeholder="Write a note for the whole Council"></textarea>
+        <div class="post-actions">
+          <label class="btn btn-ghost btn-sm file-btn">${I.paperclip} <span id="fileLbl">Attach PDF or Word</span><input type="file" id="pFile" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></label>
+          <button class="btn btn-primary btn-sm" type="submit" id="postBtn">Post</button>
+        </div>
+      </form>
+      <div id="board" class="board-pub"><p class="muted">Loading...</p></div>`, '#/');
+
+    // notice, events, record and board load in parallel
+    const [notice, events, mine, board] = await Promise.all([
+      store.get('notice', null).catch(() => null),
+      store.get('events', null).catch(() => null),
+      u.role === 'delegate' ? store.get('mysanctions', []).catch(() => []) : Promise.resolve([]),
+      loadBoard(),
+    ]);
+    if (app !== myApp) return;
+    if (notice && notice.announcement) $('#notice').innerHTML = `<div class="banner info"><div><b>From the Presidency.</b> ${esc(notice.announcement)}</div></div>`;
+    const evs = Array.isArray(events) ? events : S.events;
+    $('#events').innerHTML = evs.length ? evs.map((e) => `<div class="event"><div><div class="k">${esc(e.when || '')}</div><h3>${esc(e.title)}</h3>${e.text ? `<p>${esc(e.text)}</p>` : ''}</div></div>`).join('') : '<div class="empty">No upcoming events.</div>';
     if (u.role === 'delegate') {
-      let mine = [];
-      try { mine = await store.get('mysanctions', []); } catch {}
-      if (!$('#myRecord')) return;
       const w = mine.filter((s) => s.type === 'written').length; const f = mine.filter((s) => s.type === 'formal').length;
       $('#myRecord').innerHTML = `<div class="panel" style="margin-top:14px"><h2>Your conduct record</h2><p class="sub" style="margin:0">${mine.length === 0
-        ? 'Your delegation has no warnings on record. Keep it that way by speaking in the third person, using the Pager for messages and respecting the floor.'
-        : `Your delegation has ${w} written warning${w === 1 ? '' : 's'} and ${f} formal warning${f === 1 ? '' : 's'} on record. Remember that two written warnings add up to a formal one. If you think something is wrong, talk to the dais after the session.`}</p></div>`;
+        ? 'The delegation has no warnings on record.'
+        : `The delegation has ${w} written warning${w === 1 ? '' : 's'} and ${f} formal warning${f === 1 ? '' : 's'} on record. Two written warnings add up to a formal one. If you think something is wrong, talk to UNSC Presidency after sessions or internally.`}</p></div>`;
     }
-  }
+    drawBoard(board);
 
-  /* ---------------- HANDBOOK ---------------- */
-  function viewHandbook(sub) {
-    const H = S.handbook;
-    const tab = sub || 'letter';
-    const tabs = [['letter', 'Letter from Presidency'], ['intro', 'Introduction'], ['A', 'Topic A'], ['B', 'Topic B']];
-    let body = '';
-    if (tab === 'letter') {
-      body = `<div class="paper">${wm}<h2 style="font-style:italic;font-size:1.05em;border-bottom:1.5px solid #111;padding-bottom:.4em">Letter from Presidency</h2>
-        <p><b>${esc(H.letter.greeting)}</b></p>${H.letter.paragraphs.map((p) => `<p class="indent">${esc(p)}</p>`).join('')}
-        <p>${esc(H.letter.closing)}</p>
-        <div class="signers">${H.letter.signers.map(([n, r]) => `<div><b>${esc(n)}</b>${esc(r)}</div>`).join('')}</div>${paperFoot()}</div>`;
-    } else if (tab === 'intro') {
-      body = `<div class="paper">${wm}<h2>Introduction to the Security Council</h2>${H.intro.map((s) => `<h3>${esc(s.h)}</h3>${s.p.map((p) => `<p class="indent">${esc(p)}</p>`).join('')}`).join('')}${paperFoot()}</div>`;
-    } else {
-      const T = H.topics.find((t) => t.letter === tab);
-      body = `<div class="paper">${wm}<h2>TOPIC (${T.letter}): ${esc(T.title)}.</h2>
-        <blockquote>${esc(T.quote)}<cite>(${esc(T.quoteBy)})</cite></blockquote>
-        ${T.body.map((p) => `<p class="indent">${esc(p)}</p>`).join('')}${paperFoot()}</div>
-        <div class="paper">${wm}<h2>Links of Interest</h2><div class="links">${T.links.map(([t, u]) => `<p><b>${esc(t)}.</b><br><a href="${u}" target="_blank" rel="noopener">${esc(u)}</a></p>`).join('')}</div>
-        <h2 style="margin-top:1.4em">QARMAs</h2><p style="text-align:center;font-style:italic">Questions a resolution must answer. Your position paper and your clauses should respond to each of them.</p>
-        <ol class="q">${T.quarmas.map((q) => `<li>${esc(q)}</li>`).join('')}</ol>${paperFoot()}</div>`;
-    }
-    app.innerHTML = shell(`${pageHead('Official Handbook', tab === 'A' || tab === 'B' ? 'Topic ' + tab : 'Security Council Handbook', `<a class="btn btn-ghost" href="${H.pdf}" target="_blank" rel="noopener">${I.dl} Download the PDF</a>`)}
-      <div class="tabs">${tabs.map(([k, t]) => `<a href="#/handbook/${k}" class="${k === tab ? 'on' : ''}">${t}</a>`).join('')}</div>${body}`, '#/handbook');
-    window.scrollTo(0, 0);
+    const fileIn = $('#pFile');
+    fileIn.addEventListener('change', () => { $('#fileLbl').textContent = fileIn.files[0] ? fileIn.files[0].name : 'Attach PDF or Word'; });
+    $('#postForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = $('#postBtn'); btn.disabled = true;
+      try {
+        let file = null;
+        const f = fileIn.files[0];
+        if (f) {
+          if (f.size > 4 * 1024 * 1024) throw new Error('That file is larger than 4 MB. Try compressing it first.');
+          btn.textContent = 'Uploading...';
+          const r = await fetch('/api/board?action=upload&name=' + encodeURIComponent(f.name), { method: 'POST', headers: { Authorization: 'Bearer ' + session.token, 'Content-Type': 'application/octet-stream' }, body: f });
+          const j = await r.json().catch(() => ({}));
+          if (!r.ok) throw new Error(j.error || 'Upload failed.');
+          file = j.file;
+        }
+        btn.textContent = 'Posting...';
+        await api('/api/board', { method: 'POST', body: JSON.stringify({ title: $('#pTitle').value, text: $('#pText').value, file }) });
+        $('#pTitle').value = ''; $('#pText').value = ''; fileIn.value = ''; $('#fileLbl').textContent = 'Attach PDF or Word';
+        drawBoard(await loadBoard());
+        toast('Posted');
+      } catch (err) { toast(err.message === 'storage-not-configured' ? 'Public notes need the online database.' : err.message); }
+      finally { btn.disabled = false; btn.textContent = 'Post'; }
+    });
+  }
+  async function loadBoard() {
+    try { const j = await api('/api/board'); return j.value || []; } catch (e) { return null; }
+  }
+  function drawBoard(list) {
+    const box = $('#board'); if (!box) return;
+    if (list == null) { box.innerHTML = '<div class="empty">Public notes are not available right now.</div>'; return; }
+    const u = session.user;
+    box.innerHTML = list.length ? list.map((n) => `
+      <article class="pnote ${n.role === 'presidency' ? 'pres' : ''}">
+        <div class="m"><span>${n.role === 'delegate' ? flag(country(n.authorId).iso) : ''}<b>${esc(n.role === 'delegate' ? country(n.authorId).short : n.by)}</b>, ${fmtTime(n.at)}</span>
+          ${isAdmin() || n.authorId === u.id ? `<button class="linkbtn danger" data-delpost="${n.id}">Delete</button>` : ''}</div>
+        ${n.title ? `<h3>${esc(n.title)}</h3>` : ''}${n.text ? `<p>${esc(n.text)}</p>` : ''}
+        ${n.file ? `<a class="attach" href="${esc(n.file.url)}" target="_blank" rel="noopener"><span class="ft ${esc(n.file.ext)}">${esc((n.file.ext || '').toUpperCase())}</span><span>${esc(n.file.name)}</span><small>${fmtSize(n.file.size || 0)}</small></a>` : ''}
+      </article>`).join('') : '<div class="empty">No public notes yet.</div>';
+    $$('[data-delpost]', box).forEach((b) => b.onclick = async () => {
+      if (b.dataset.sure !== '1') { b.dataset.sure = '1'; b.textContent = 'Confirm delete'; return; }
+      try { await api('/api/board?id=' + encodeURIComponent(b.dataset.delpost), { method: 'DELETE' }); drawBoard(await loadBoard()); }
+      catch (e) { toast(e.message); }
+    });
   }
 
   /* ---------------- DOCUMENTS ---------------- */
-  function docCard([t, d, p], extraAttrs = '') {
+  function docCard([t, p]) {
     const ft = fileType(p);
-    return `<a class="doc" href="${p}" target="_blank" rel="noopener" ${extraAttrs}><div class="thumb"><span class="ft ${ft.toLowerCase()}">${ft}</span><img src="assets/unsc-logo.png" alt=""></div><div class="body"><h3>${esc(t)}</h3><p>${esc(d)}</p></div></a>`;
+    const thumb = 'thumbs/' + p.split('/').pop().replace(/\.[^.]+$/, '') + '.jpg';
+    return `<a class="doc" href="${p}" target="_blank" rel="noopener"><div class="cover-thumb"><img src="${thumb}" alt="" loading="lazy" onerror="this.remove()"><span class="ft ${ft.toLowerCase()}">${ft}</span></div><div class="body"><h3>${esc(t)}</h3></div></a>`;
   }
   function viewDocuments() {
-    app.innerHTML = shell(`${pageHead('Document Centre', 'Templates, guides and examples')}
-      <p style="max-width:820px;margin-top:-6px;color:var(--ink-soft)">Every official document the Council uses is here, grouped by what you are trying to do. Files open in a new tab, and the Word templates download so you can edit them straight away.</p>
-      <div class="search" style="max-width:460px;margin:12px 0 22px">${I.search}<input id="docSearch" placeholder="Search documents, for example “veto” or “position paper”"></div>
+    app.innerHTML = shell(`${pageHead('', 'Documents')}
+      <div class="search" style="max-width:460px;margin:0 0 22px">${I.search}<input id="docSearch" placeholder="Search documents"></div>
       <div id="docList"></div>`, '#/documents');
     const draw = (q) => {
       q = (q || '').toLowerCase();
       $('#docList').innerHTML = S.documents.map((g) => {
-        const items = g.items.filter((i) => !q || (i[0] + ' ' + i[1]).toLowerCase().includes(q));
+        const items = g.items.filter((i) => !q || i[0].toLowerCase().includes(q));
         if (!items.length) return '';
-        return `<section class="doc-group"><h2>${esc(g.group)}</h2>${q ? '' : `<p class="note">${esc(g.note)}</p>`}<div class="docs">${items.map((i) => docCard(i)).join('')}</div></section>`;
-      }).join('') || '<div class="empty">Nothing matches that search. Try a shorter word.</div>';
+        return `<section class="doc-group"><h2>${esc(g.group)}</h2><div class="docs">${items.map(docCard).join('')}</div></section>`;
+      }).join('') || '<div class="empty">Nothing matches that search.</div>';
     };
     draw(''); $('#docSearch').addEventListener('input', (e) => draw(e.target.value));
   }
 
   /* ---------------- PROCEDURE ---------------- */
+  const wm = '<img class="wm" src="assets/unsc-logo.png" alt="">';
+  const paperFoot = () => `<div class="paper-foot"><img src="assets/unsc-logo.png" alt="">UEPRIM MUN IV EDITION</div>`;
   function viewProcedure() {
     const P = S.procedure;
     const rc = ([t, d, ex]) => `<div class="rule-card"><h4>${esc(t)}</h4><p>${esc(d)}</p>${ex ? `<div class="ex">${esc(ex)}</div>` : ''}</div>`;
-    app.innerHTML = shell(`${pageHead('Committee Procedure', 'Rules, points and motions', `<a class="btn btn-ghost" href="docs/motions-and-points-full.pdf" target="_blank" rel="noopener">${I.dl} Full motions sheet</a>`)}
+    app.innerHTML = shell(`${pageHead('', 'Rules of Procedure', `<a class="btn btn-ghost" href="docs/motions-and-points-full.pdf" target="_blank" rel="noopener">${I.dl} Full motions sheet</a>`)}
       <div class="toc"><a href="#/procedure" data-jump="flow">How a session flows</a><a href="#/procedure" data-jump="points">Points and replies</a><a href="#/procedure" data-jump="motions">Motions</a><a href="#/procedure" data-jump="docs">Resolutions and amendments</a><a href="#/procedure" data-jump="voting">Voting and the VETO</a><a href="#/procedure" data-jump="conduct">Conduct and sanctions</a></div>
-      <div class="paper">${wm}<h2>Committee Procedure</h2><p class="indent">${esc(P.intro)}</p>
+      <div class="paper">${wm}<h2>Rules of Procedure</h2><p class="indent">${esc(P.intro)}</p>
         <h3 id="flow">How a session flows</h3><ol class="flow">${P.flow.map(([t, d]) => `<li><div><b>${esc(t)}</b>${esc(d)}</div></li>`).join('')}</ol>
         <h3 id="points">Points and replies</h3>${P.points.map(rc).join('')}
         <h3 id="motions">Motions you will use most</h3>${P.motions.map(rc).join('')}
@@ -309,40 +324,28 @@
 
   /* ---------------- SESSIONS ---------------- */
   function viewSessions() {
-    const docName = (p) => { for (const g of S.documents) for (const i of g.items) if (i[2] === p) return i[0]; return p.split('/').pop(); };
-    app.innerHTML = shell(`${pageHead('PRE-MUN Sessions', 'Agendas and materials')}
-      <p style="max-width:820px;margin-top:-6px;color:var(--ink-soft)">${esc(S.sessions.intro)}</p>
-      <div class="timeline">${S.sessions.days.map((d) => `<div class="tl ${d.next ? 'next' : ''}"><div class="d">${d.next ? 'Coming up, ' : ''}Day ${esc(d.day)}</div><h3>${esc(d.title)}</h3><p>${esc(d.text)}</p>
-        ${d.docs ? `<div class="docs-inline">${d.docs.map((p) => `<a class="pill" href="${p}" target="_blank" rel="noopener">${I.dl} ${esc(docName(p))}</a>`).join('')}</div>` : ''}
-        ${d.next ? '<div class="docs-inline"><a class="pill" href="#/mock">Open the Mock II briefing</a></div>' : ''}</div>`).join('')}</div>`, '#/sessions');
+    const docName = (p) => { for (const g of S.documents) for (const i of g.items) if (i[1] === p) return i[0]; return p.split('/').pop(); };
+    app.innerHTML = shell(`${pageHead('', 'PRE-MUN Sessions')}
+      <div class="timeline">${S.sessions.days.map((d) => `<div class="tl"><div class="d">Day ${esc(d.day)}</div><h3>${esc(d.title)}</h3><p>${esc(d.text)}</p>
+        ${d.docs ? `<div class="docs-inline">${d.docs.map((p) => `<a class="pill" href="${p}" target="_blank" rel="noopener">${I.dl} ${esc(docName(p))}</a>`).join('')}</div>` : ''}</div>`).join('')}</div>`, '#/sessions');
   }
 
-  /* ---------------- MOCK II ---------------- */
-  function viewMock() {
-    const M = S.mock;
-    app.innerHTML = shell(`${pageHead('Mock Simulation II, ' + M.days, 'Red Sea security')}
-      <div class="paper">${wm}<h2>${esc(M.title)}</h2>${M.body.map((p) => `<p class="indent">${esc(p)}</p>`).join('')}${paperFoot()}</div>
-      <div class="paper">${wm}<h2>QARMAs</h2><p style="text-align:center;font-style:italic">The questions the Council should answer by the end of Day 20.</p><ol class="q">${M.quarmas.map((q) => `<li>${esc(q)}</li>`).join('')}</ol>
-        <h2 style="margin-top:1.4em">How to prepare</h2>${M.prepare.map((p) => `<p class="indent">${esc(p)}</p>`).join('')}
-        <h2 style="margin-top:1.4em">Links of Interest</h2><div class="links">${M.links.map(([t, u]) => `<p><b>${esc(t)}.</b><br><a href="${u}" target="_blank" rel="noopener">${esc(u)}</a></p>`).join('')}</div>
-        <p style="font-style:italic;color:var(--ink-soft)">Facts move quickly in this crisis, so check every figure against a current source before you use it in a speech. The Fact-Checker will.</p>${paperFoot()}</div>
-      <div class="docs">${docCard(['Resolution Guide (for the 2nd mock session)', 'Written for this simulation, read it before Day 20.', 'docs/resolution-guide.pdf'])}${docCard(['Opening Speech Writing Guide', 'The structure for your 1:30 opening speech.', 'docs/opening-speech-guide.pdf'])}${docCard(['Statement on the Exercise of the VETO', 'For P5 delegations, just in case.', 'docs/veto-statement-format.pdf'])}</div>`, '#/mock');
-  }
-
-  /* ---------------- DAIS ---------------- */
-  function viewDais() {
-    const initials = (n) => n.split(' ').filter(Boolean).slice(0, 2).map((x) => x[0]).join('');
-    app.innerHTML = shell(`${pageHead('Contact the Dais', 'Your UNSC Presidency')}
-      <p style="max-width:820px;margin-top:-6px;color:var(--ink-soft)">The dais runs the Council, answers your questions and evaluates your work. Use your school email, write a clear subject such as “UNSC, France, position paper question”, and give us a day to answer. During session, messages go through the Pager and never by email.</p>
-      <div class="dais">${S.dais.map((d) => `<div class="person"><div class="top"><div class="mono">${esc(initials(d.name))}</div><div><h3>${esc(d.name)}</h3><span>${esc(d.role)}</span></div></div>
-        <div class="bd"><p>${esc(d.blurb)}</p><div class="email"><code>${esc(d.email)}</code><a class="btn btn-primary btn-sm" href="mailto:${esc(d.email)}?subject=${encodeURIComponent('UNSC question')}">${I.mail} Email</a><button class="btn btn-ghost btn-sm" data-copy="${esc(d.email)}">Copy</button></div></div></div>`).join('')}</div>`, '#/dais');
+  /* ---------------- CONTACTS ---------------- */
+  function viewContacts() {
+    app.innerHTML = shell(`${pageHead('', 'Contacts')}
+      <div class="contacts">${S.contacts.map((d) => `<div class="contact">
+        <div class="row"><span class="role">${esc(d.role)}</span><span class="inst">Institutional account</span></div>
+        <div class="cname">${esc(d.name)}</div>
+        <div class="cmail">${esc(d.email)}</div>
+        <div class="cbtns"><a class="btn btn-primary" href="https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(d.email)}" target="_blank" rel="noopener">Write in Outlook ${I.arrow}</a><button class="btn btn-ghost" data-copy="${esc(d.email)}">Copy</button></div>
+      </div>`).join('')}</div>`, '#/contacts');
     $$('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
       try { await navigator.clipboard.writeText(b.dataset.copy); toast('Email copied'); } catch { toast(b.dataset.copy); }
     }));
   }
 
   /* ---------------- MY NOTES ---------------- */
-  const FOLDERS = [['all', 'All notes'], ['general', 'General'], ['topicA', 'Topic A'], ['topicB', 'Topic B'], ['mock', 'Mock II'], ['speech', 'Speeches'], ['clauses', 'Clauses'], ['pinned', 'Pinned']];
+  const FOLDERS = [['all', 'All notes'], ['general', 'General'], ['topicA', 'Topic A'], ['topicB', 'Topic B'], ['speech', 'Speeches'], ['clauses', 'Clauses'], ['pinned', 'Pinned']];
   const folderName = (k) => (FOLDERS.find((f) => f[0] === k) || [k, 'General'])[1];
   async function viewNotes() {
     const u = session.user;
@@ -354,13 +357,13 @@
     let folder = 'all', sort = 'recent', q = '', tagFilter = '';
     const firstName = u.role === 'delegate' ? 'delegate of ' + country(u.id).short : u.name;
     app.innerHTML = shell(`
-      ${!store.online() ? '<div class="banner"><div><b>Notes are saved in this browser for now.</b> Until the online database is connected they will not follow you to another device, so use Export now and then to keep a copy.</div></div>' : ''}
+      ${!store.online() ? '<div class="banner"><div><b>Notes are saved in this browser only right now.</b></div></div>' : ''}
       <div class="notes-wrap">
         <aside class="notes-side" id="side"></aside>
         <section class="notes-main">
           <div class="notes-top"><div class="search">${I.search}<input id="nq" placeholder="Search your notes"></div>
             <button class="btn btn-ghost" id="exportBtn">${I.dl} Export</button><button class="btn btn-primary" id="newBtn">${I.plus} New Note</button></div>
-          <div class="welcome"><h1>Welcome back, ${esc(firstName)}!</h1><p>Your private notebook. Only you can see what you write here.</p></div>
+          <div class="welcome"><h1>Welcome back, ${esc(firstName)}!</h1></div>
           <div class="tabs" id="ftabs"></div>
           <div class="notes-bar"><h2 id="ncount"></h2><div class="sorter"><button data-s="recent">Most recent</button><button data-s="az">A to Z</button></div></div>
           <div class="ngrid" id="ngrid"></div>
@@ -380,7 +383,7 @@
       const counts = (k) => k === 'all' ? notes.length : k === 'pinned' ? notes.filter((n) => n.pinned).length : notes.filter((n) => n.folder === k).length;
       $('#side').innerHTML = `<div class="sb-t" style="margin-top:0">Notebook</div>${FOLDERS.map(([k, t]) => `<button data-f="${k}" class="${folder === k ? 'on' : ''}">${t}<span class="count">${counts(k)}</span></button>`).join('')}
         ${allTags().length ? `<div class="sb-t">Your tags</div><div class="tagchips">${allTags().map((t) => `<button data-t="${esc(t)}" class="${tagFilter === t ? 'on' : ''}">#${esc(t)}</button>`).join('')}</div>` : ''}`;
-      $('#ftabs').innerHTML = FOLDERS.slice(0, 7).map(([k, t]) => `<button data-f="${k}" class="${folder === k ? 'on' : ''}">${t}</button>`).join('');
+      $('#ftabs').innerHTML = FOLDERS.slice(0, 6).map(([k, t]) => `<button data-f="${k}" class="${folder === k ? 'on' : ''}">${t}</button>`).join('');
       $$('.sorter button').forEach((b) => b.classList.toggle('on', b.dataset.s === sort));
       const list = filtered();
       $('#ncount').textContent = `${folder === 'all' ? 'All notes' : folderName(folder)} (${list.length})`;
@@ -388,7 +391,7 @@
         <button class="ncard" data-id="${n.id}"><div class="prev"><b>${esc(n.title || 'Untitled note')}</b>${esc((n.body || '').slice(0, 420))}${n.pinned ? `<span class="badge" style="color:var(--gold)">${I.pin}</span>` : ''}</div>
           <div class="meta"><div class="row"><h3>${esc(n.title || 'Untitled note')}</h3><span class="ftag">${esc(folderName(n.folder))}</span></div>
           <div class="date"><span>${fmtDate(n.updated)}</span><span>${(n.body || '').trim() ? (n.body.trim().split(/\s+/).length + ' words') : 'Empty'}</span></div></div></button>`).join('')
-        : `<div class="empty" style="grid-column:1/-1">${notes.length ? 'No notes match what you are looking for.' : 'You have no notes yet. Start one for your opening speech, your research on Topic A or the clauses you want in the next resolution.'}<div style="margin-top:12px"><button class="btn btn-primary" id="emptyNew">${I.plus} New Note</button></div></div>`;
+        : `<div class="empty" style="grid-column:1/-1">${notes.length ? 'No notes match what you are looking for.' : 'You have no notes yet.'}<div style="margin-top:12px"><button class="btn btn-primary" id="emptyNew">${I.plus} New Note</button></div></div>`;
       const en = $('#emptyNew'); if (en) en.onclick = () => openEditor(null);
     };
     const openEditor = (id) => {
@@ -461,10 +464,9 @@
   async function viewPresidency(sub) {
     if (!isAdmin()) { location.hash = '#/'; return; }
     const tab = sub || 'sanctions';
-    const tabs = [['sanctions', 'Sanctions'], ['internal', 'Internal notes'], ['evaluations', 'Evaluations'], ['notice', 'Notices and event'], ['delegations', 'Delegations'], ['files', 'Dais files']];
+    const tabs = [['sanctions', 'Sanctions'], ['internal', 'Internal notes'], ['evaluations', 'Evaluations'], ['notice', 'Events and announcement'], ['delegations', 'Delegations'], ['files', 'Presidency files']];
     app.innerHTML = shell(`
-      <section class="hub-head admin-head"><img class="bgem" src="assets/emblem-light.png" alt=""><div class="k">Presidency only</div><h1>Presidency Desk</h1>
-        <p>Signed in as ${esc(session.user.name)}. Nothing on this page is visible to delegates, except that each delegation can see its own warnings on its home page.</p><div class="gold-line"></div></section>
+      <section class="hub-head admin-head"><img class="bgem" src="assets/emblem-light.png" alt=""><div class="k">${esc(session.user.name)}</div><h1>Presidency Only</h1><div class="gold-line"></div></section>
       <div class="tabs">${tabs.map(([k, t]) => `<a href="#/presidency/${k}" class="${k === tab ? 'on' : ''}">${t}</a>`).join('')}</div>
       <div id="adm"><p>Loading...</p></div>`, '#/presidency');
     const box = $('#adm');
@@ -481,7 +483,7 @@
           const effF = f + Math.floor(w / 2);
           return `<div><span>${flag(c.iso)}${esc(c.short)}</span>${effF ? `<span class="status f">${effF} formal</span>` : w ? `<span class="status w">${w} written</span>` : '<span class="status ok">Clean</span>'}</div>`;
         }).join('');
-        box.innerHTML = `<div class="panel"><h2>Apply a sanction</h2><p class="sub">Following the Estatuto, a written warning is for repeated procedural faults or disturbing the room, and two written warnings count as one formal warning, which means the delegation leaves the session for a while. A formal warning can also be given directly for a serious lack of respect.</p>
+        box.innerHTML = `<div class="panel"><h2>Apply a sanction</h2><p class="sub">Two written warnings count as one formal warning (Estatuto, Art. 56 and 57).</p>
           <form id="sf" class="form-grid">
             <div><label class="f">Delegation</label><select class="input" id="sc" required><option value="">Choose</option>${countryOpts}</select></div>
             <div><label class="f">Type</label><select class="input" id="st"><option value="written">Written warning</option><option value="formal">Formal warning</option></select></div>
@@ -511,8 +513,8 @@
       const drawI = async () => {
         const list = await store.get('internal', []);
         if (!box.isConnected) return;
-        box.innerHTML = `<div class="panel"><h2>Internal notes for the dais</h2><p class="sub">A shared board for the three of us. Use it for things to fix next session, who deserves a mention, crisis ideas or anything the delegates should not see.</p>
-          <form id="inf"><textarea class="input" id="intext" rows="4" required placeholder="Write a note for the rest of the dais"></textarea><div style="margin-top:10px"><button class="btn btn-gold" type="submit">Post to the board</button></div></form></div>
+        box.innerHTML = `<div class="panel"><h2>Internal notes</h2><p class="sub">Only the Presidency can see this board.</p>
+          <form id="inf"><textarea class="input" id="intext" rows="4" required placeholder="Write a note for the Presidency"></textarea><div style="margin-top:10px"><button class="btn btn-gold" type="submit">Post to the board</button></div></form></div>
           <div class="board">${list.length ? list.slice().sort((a, b) => (b.pinned - a.pinned) || (b.at - a.at)).map((n) => `<div class="item"><div class="m"><span><b>${esc(n.by)}</b>, ${fmtTime(n.at)}${n.pinned ? ' (pinned)' : ''}</span><span><button class="linkbtn" style="color:var(--navy-600)" data-pin="${n.id}">${n.pinned ? 'Unpin' : 'Pin'}</button> &nbsp; <button class="linkbtn" style="color:var(--danger)" data-del="${n.id}">Delete</button></span></div><p>${esc(n.text)}</p></div>`).join('') : '<div class="empty">The board is empty for now.</div>'}</div>`;
         $('#inf').onsubmit = async (e) => {
           e.preventDefault();
@@ -535,7 +537,7 @@
         if (!box.isConnected) return;
         const avg = (c) => { const m = list.filter((e) => e.country === c); if (!m.length) return null; return (m.reduce((s, e) => s + e.total, 0) / m.length).toFixed(1); };
         const ranking = ROSTER.map((c) => ({ c, a: avg(c.id), n: list.filter((e) => e.country === c.id).length })).filter((x) => x.a != null).sort((a, b) => b.a - a.a);
-        box.innerHTML = `<div class="panel"><h2>Evaluate a delegate</h2><p class="sub">The same rubric as the official UNSC Delegate Evaluation sheet, scored from 2 to 8 on each criterion for a total out of 40. Fill it in during or right after the session while it is fresh.</p>
+        box.innerHTML = `<div class="panel"><h2>Evaluate a delegate</h2><p class="sub">Official UNSC Delegate Evaluation rubric, 2 to 8 per criterion, total out of 40.</p>
           <form id="ef"><div class="form-grid"><div><label class="f">Delegation</label><select class="input" id="ec" required><option value="">Choose</option>${countryOpts}</select></div>
             <div><label class="f">Topic</label><input class="input" id="et" placeholder="Mock II, Red Sea"></div><div><label class="f">Day</label><input class="input" id="ed" placeholder="Day 19"></div></div>
             <div style="margin:12px 0">${CRITERIA.map(([k, t, d]) => `<div class="score-row"><div><b>${t}</b><small>${d}</small></div><select class="input" data-k="${k}">${[2, 3, 4, 5, 6, 7, 8].map((v) => `<option ${v === 6 ? 'selected' : ''}>${v}</option>`).join('')}</select></div>`).join('')}</div>
@@ -543,7 +545,7 @@
             <div><label class="f">Procedural independence</label><select class="input" id="e2"><option value="I">I, independent</option><option value="P">P, prompted</option><option value="N/O">N/O, no observation</option></select></div></div>
             <div class="form-grid" style="margin-top:10px"><div><label class="f">Strengths</label><textarea class="input" id="es" rows="2"></textarea></div><div><label class="f">Weaknesses</label><textarea class="input" id="ew" rows="2"></textarea></div><div><label class="f">Action for next session</label><textarea class="input" id="ea" rows="2"></textarea></div></div>
             <div style="margin-top:12px"><button class="btn btn-gold" type="submit">Save evaluation</button></div></form></div>
-          <div class="panel"><h2>Running averages</h2><p class="sub">Useful when the time comes to decide Best Delegate and the written and verbal mentions.</p>
+          <div class="panel"><h2>Running averages</h2>
             ${ranking.length ? `<div class="table-wrap"><table class="t"><thead><tr><th>#</th><th>Delegation</th><th>Average out of 40</th><th>Evaluations</th></tr></thead><tbody>${ranking.map((r, i) => `<tr><td>${i + 1}</td><td>${flag(r.c.iso)}${esc(r.c.short)}</td><td><b>${r.a}</b></td><td>${r.n}</td></tr>`).join('')}</tbody></table></div>` : '<p style="color:var(--ink-soft)">No evaluations yet.</p>'}</div>
           <div class="panel"><h2>All evaluations</h2><div class="table-wrap"><table class="t"><thead><tr><th>Delegation</th><th>Day and topic</th><th>Scores</th><th>Total</th><th>Notes</th><th></th></tr></thead><tbody>
             ${list.length ? list.slice().sort((a, b) => b.at - a.at).map((e) => `<tr><td>${flag(country(e.country).iso)}${esc(country(e.country).short)}</td><td>${esc(e.day)}<br><small>${esc(e.topic)}</small></td><td><small>${CRITERIA.map(([k, t]) => t + ' ' + e.scores[k]).join(', ')}<br>Initiative ${esc(e.initiative)}, independence ${esc(e.independence)}</small></td><td><b>${e.total}</b>/40</td><td><small>${e.strengths ? '<b>Strengths.</b> ' + esc(e.strengths) + '<br>' : ''}${e.weaknesses ? '<b>Weaknesses.</b> ' + esc(e.weaknesses) + '<br>' : ''}${e.action ? '<b>Next.</b> ' + esc(e.action) : ''}<br>By ${esc(e.by)}</small></td><td><button class="btn btn-danger btn-sm" data-del="${e.id}">Remove</button></td></tr>`).join('') : '<tr><td colspan="6" style="color:var(--ink-soft)">Nothing here yet.</td></tr>'}</tbody></table></div></div>`;
@@ -564,26 +566,40 @@
     }
 
     if (tab === 'notice') {
-      const n = (await store.get('notice', null)) || {};
-      if (!box.isConnected) return;
-      box.innerHTML = `<div class="panel"><h2>Announcement on the home page</h2><p class="sub">Shows as a banner at the top of every delegate’s home page. Leave it empty to hide it.</p>
-        <textarea class="input" id="na" rows="3" placeholder="For example, remember to bring your printed opening speech on Tuesday.">${esc(n.announcement || '')}</textarea></div>
-        <div class="panel"><h2>Upcoming event</h2><p class="sub">The highlighted event card on the home page. Empty fields fall back to the default text in content.js.</p>
-        <div class="field"><label class="f">Title</label><input class="input" id="ne1" value="${esc(n.eventTitle || '')}" placeholder="${esc(S.upcoming.title)}"></div>
-        <div class="field"><label class="f">When and where</label><input class="input" id="ne2" value="${esc(n.eventWhen || '')}" placeholder="${esc(S.upcoming.when)}"></div>
-        <div class="field"><label class="f">Description</label><textarea class="input" id="ne3" rows="3" placeholder="${esc(S.upcoming.text)}">${esc(n.eventText || '')}</textarea></div>
-        <button class="btn btn-gold" id="nsave">Publish changes</button>${n.updatedBy ? `<span class="hint" style="margin-left:10px">Last updated by ${esc(n.updatedBy)}, ${fmtTime(n.updatedAt)}</span>` : ''}</div>`;
-      $('#nsave').onclick = async () => {
-        await store.put('notice', { announcement: $('#na').value.trim(), eventTitle: $('#ne1').value.trim(), eventWhen: $('#ne2').value.trim(), eventText: $('#ne3').value.trim(), updatedBy: by, updatedAt: Date.now() });
-        toast(store.online() ? 'Published for every delegate' : 'Saved in this browser only');
+      const drawN = async () => {
+        const [n, evRaw] = await Promise.all([store.get('notice', null), store.get('events', null)]);
+        if (!box.isConnected) return;
+        const evs = Array.isArray(evRaw) ? evRaw : S.events.map((e) => ({ ...e, id: uid() }));
+        box.innerHTML = `<div class="panel"><h2>Events on Home</h2>
+          <form id="evf"><div class="form-grid"><div><label class="f">Title</label><input class="input" id="et1" required placeholder="Day 19: Mock session"></div>
+            <div><label class="f">When and where</label><input class="input" id="et2" placeholder="Tuesday 1 December, Aula 18, 3:15 PM"></div></div>
+            <div class="field" style="margin-top:10px"><label class="f">Description</label><textarea class="input" id="et3" rows="3"></textarea></div>
+            <button class="btn btn-gold" type="submit">Add event</button></form>
+          <div class="table-wrap" style="margin-top:14px"><table class="t"><thead><tr><th>Event</th><th>When</th><th></th></tr></thead><tbody>
+          ${evs.length ? evs.map((e, i) => `<tr><td><b>${esc(e.title)}</b><br><small>${esc(e.text || '')}</small></td><td>${esc(e.when || '')}</td><td style="white-space:nowrap">${i > 0 ? `<button class="btn btn-ghost btn-sm" data-up="${i}">Move up</button> ` : ''}<button class="btn btn-danger btn-sm" data-delev="${i}">Remove</button></td></tr>`).join('') : '<tr><td colspan="3" style="color:var(--ink-soft)">No events.</td></tr>'}</tbody></table></div></div>
+          <div class="panel"><h2>Announcement</h2><p class="sub">Banner at the top of Home. Leave it empty to hide it.</p>
+          <textarea class="input" id="na" rows="3">${esc((n && n.announcement) || '')}</textarea>
+          <div style="margin-top:10px"><button class="btn btn-gold" id="nsave">Publish announcement</button>${n && n.updatedBy ? `<span class="hint" style="margin-left:10px">Last updated by ${esc(n.updatedBy)}, ${fmtTime(n.updatedAt)}</span>` : ''}</div></div>`;
+        const saveEv = async (list) => { await store.put('events', list); drawN(); };
+        $('#evf').onsubmit = async (e) => { e.preventDefault(); evs.push({ id: uid(), title: $('#et1').value.trim(), when: $('#et2').value.trim(), text: $('#et3').value.trim() }); await saveEv(evs); toast('Event added'); };
+        $$('[data-delev]', box).forEach((b) => b.onclick = async () => {
+          if (b.dataset.sure !== '1') { b.dataset.sure = '1'; b.textContent = 'Confirm'; return; }
+          const idx = Number(b.dataset.delev);
+          await saveEv(evs.filter((_, j) => j !== idx));
+        });
+        $$('[data-up]', box).forEach((b) => b.onclick = async () => { const i = Number(b.dataset.up); [evs[i - 1], evs[i]] = [evs[i], evs[i - 1]]; await saveEv(evs); });
+        $('#nsave').onclick = async () => {
+          await store.put('notice', { announcement: $('#na').value.trim(), updatedBy: by, updatedAt: Date.now() });
+          toast(store.online() ? 'Published' : 'Saved in this browser only');
+        };
       };
-      return;
+      return drawN();
     }
 
     if (tab === 'delegations') {
-      box.innerHTML = `<div class="panel"><h2>Delegations and PINs</h2><p class="sub">Each delegation signs in with the shared delegate code and its own PIN. If a delegate forgets their PIN, reset it here and the next PIN they type becomes the new one. Their notes are kept.</p>
+      box.innerHTML = `<div class="panel"><h2>Delegations and PINs</h2><p class="sub">If a delegate forgets their PIN, reset it here and the next PIN they type becomes the new one. Their notes are kept.</p>
         <div class="table-wrap"><table class="t"><thead><tr><th>Delegation</th><th>Official name</th><th>Seat</th><th></th></tr></thead><tbody>
-        ${ROSTER.map((c) => `<tr><td>${flag(c.iso)}<b>${esc(c.short)}</b></td><td>${esc(c.name)}</td><td>${c.p5 ? 'Permanent (P5)' : 'Non-permanent'}</td><td><button class="btn btn-ghost btn-sm" data-reset="${c.id}" ${store.online() ? '' : 'disabled title="Needs the online database"'}>Reset PIN</button></td></tr>`).join('')}</tbody></table></div></div>`;
+        ${ROSTER.map((c) => `<tr><td>${flag(c.iso)}<b>${esc(c.short)}</b></td><td>${esc(c.name)}</td><td>${['china','france','russia','uk','usa'].includes(c.id) ? 'Permanent' : 'Non-permanent'}</td><td><button class="btn btn-ghost btn-sm" data-reset="${c.id}" ${store.online() ? '' : 'disabled title="Needs the online database"'}>Reset PIN</button></td></tr>`).join('')}</tbody></table></div></div>`;
       $$('[data-reset]', box).forEach((b) => b.onclick = async () => {
         if (b.dataset.sure !== '1') { b.dataset.sure = '1'; b.textContent = 'Confirm reset'; return; }
         try { await api('/api/data?key=resetpin', { method: 'POST', body: JSON.stringify({ country: b.dataset.reset }) }); toast('PIN reset for ' + country(b.dataset.reset).short); b.textContent = 'Done'; }
@@ -594,7 +610,7 @@
 
     if (tab === 'files') {
       box.innerHTML = S.privateFiles.map((g) => `<section class="doc-group"><h2>${esc(g.group)}</h2><div class="docs">${g.items.map(([t, f]) =>
-        `<a class="doc" target="_blank" rel="noopener" href="/api/private?file=${encodeURIComponent(f)}&t=${encodeURIComponent(session.token)}"><div class="thumb" style="background:linear-gradient(135deg,#4a3a12,#0c2a5b)"><span class="ft">${fileType(f)}</span><img src="assets/unsc-logo.png" alt=""></div><div class="body"><h3>${esc(t)}</h3><p>Only the dais can open this file.</p></div></a>`).join('')}</div></section>`).join('');
+        `<a class="doc" target="_blank" rel="noopener" href="/api/private?file=${encodeURIComponent(f)}&t=${encodeURIComponent(session.token)}"><div class="thumb" style="background:linear-gradient(135deg,#4a3a12,#0c2a5b)"><span class="ft">${fileType(f)}</span><img src="assets/unsc-logo.png" alt=""></div><div class="body"><h3>${esc(t)}</h3><p>Presidency only</p></div></a>`).join('')}</div></section>`).join('');
     }
   }
 
@@ -604,7 +620,7 @@
     const fresh = app.cloneNode(false); app.replaceWith(fresh); app = fresh; // drop old listeners
     if (!session) return viewLogin();
     const [, route = '', sub] = (location.hash || '#/').split('/');
-    const views = { '': viewHome, handbook: viewHandbook, documents: viewDocuments, procedure: viewProcedure, sessions: viewSessions, mock: viewMock, dais: viewDais, notes: viewNotes, presidency: viewPresidency };
+    const views = { '': viewHome, documents: viewDocuments, procedure: viewProcedure, sessions: viewSessions, contacts: viewContacts, notes: viewNotes, presidency: viewPresidency };
     const fn = views[route] || viewHome;
     await fn(sub);
     $('#logoutBtn') && ($('#logoutBtn').onclick = () => logout(false));

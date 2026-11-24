@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
 
   if (b.role === 'presidency') {
     if (!L.safeEqual((b.code || '').trim(), L.PRESIDENCY_CODE)) {
-      return L.send(res, 401, { error: 'That Presidency code is not right. Check with the President of the Council.' });
+      return L.send(res, 401, { error: 'That Presidency code is not right.' });
     }
     const member = DAIS.includes(b.member) ? b.member : 'Presidency';
     const user = { role: 'presidency', id: 'dais-' + member.toLowerCase().replace(/[^a-z]/g, ''), name: member, exp: Date.now() + 14 * DAY };
@@ -19,9 +19,6 @@ module.exports = async (req, res) => {
   }
 
   if (b.role === 'delegate') {
-    if (!L.safeEqual((b.code || '').trim(), L.DELEGATE_CODE)) {
-      return L.send(res, 401, { error: 'That delegate code is not right. Your dais shared it with you in class.' });
-    }
     const c = COUNTRIES.find((x) => x.id === b.country);
     if (!c) return L.send(res, 400, { error: 'Choose your delegation first.' });
     const pin = String(b.pin || '').trim();

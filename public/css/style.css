@@ -34,30 +34,35 @@ img { max-width: 100%; display: block; }
   background: radial-gradient(120% 80% at 50% 25%, var(--navy-600) 0%, var(--navy-700) 35%, var(--navy-800) 70%, var(--navy-900) 100%);
   display: flex; flex-direction: column;
 }
-.cover-emblem-bg {
-  position: absolute; left: 50%; top: 2%; width: min(1500px, 190vw); transform: translateX(-50%);
-  opacity: .085; pointer-events: none; filter: blur(.3px);
+/* faint emblem like the handbook cover, kept inside the blue area and faded out before the logos */
+.cover-glow { position: absolute; inset: 0 0 160px 0; overflow: hidden; pointer-events: none;
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 42%, #000 35%, transparent 75%); mask-image: radial-gradient(70% 70% at 50% 42%, #000 35%, transparent 75%); }
+.cover-glow img { position: absolute; left: 50%; top: 50%; width: min(1100px, 150vw); transform: translate(-50%, -52%); opacity: .06; }
+.cover-inner { position: relative; z-index: 2; flex: 1; width: 100%; max-width: 1120px; margin: 0 auto; padding: 56px 24px 32px;
+  display: grid; grid-template-columns: 1.25fr 1fr; gap: 48px; align-items: center; }
+.cover-left { display: flex; flex-direction: column; align-items: flex-start; }
+.edition { letter-spacing: .1em; font-weight: 500; font-size: 15px; opacity: .92; text-transform: uppercase; }
+.lockup { display: flex; align-items: center; gap: clamp(16px, 2.6vw, 30px); margin-top: 22px; }
+.lockup img { width: clamp(104px, 13vw, 170px); filter: brightness(0) invert(1); }
+.lockup .rule { width: 2px; align-self: stretch; background: #fff; opacity: .95; min-height: 110px; }
+.lockup h1 { margin: 0; font-weight: 800; line-height: .95; letter-spacing: -.01em; font-size: clamp(38px, 5.6vw, 72px); }
+.lockup .un { margin-top: 12px; font-size: clamp(15px, 1.6vw, 20px); font-weight: 500; opacity: .95; }
+@media (max-width: 860px) {
+  .cover-inner { grid-template-columns: 1fr; gap: 28px; padding: 40px 16px 24px; justify-items: center; }
+  .cover-left { align-items: center; }
 }
-.cover-inner { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; align-items: center; padding: 48px 16px 0; }
-.edition { letter-spacing: .08em; font-weight: 500; font-size: 15px; opacity: .92; text-transform: uppercase; }
-.lockup { display: flex; align-items: center; gap: clamp(16px, 3vw, 32px); margin-top: clamp(28px, 7vh, 72px); }
-.lockup img { width: clamp(110px, 16vw, 190px); filter: brightness(0) invert(1); }
-.lockup .rule { width: 2px; align-self: stretch; background: #fff; opacity: .95; min-height: 120px; }
-.lockup h1 { margin: 0; font-weight: 800; line-height: .95; letter-spacing: -.01em; font-size: clamp(38px, 6.4vw, 78px); }
-.lockup .un { margin-top: 12px; font-size: clamp(15px, 1.7vw, 21px); font-weight: 500; opacity: .95; }
-.cover-title { margin: clamp(26px, 5vh, 54px) 0 8px; font-weight: 800; font-size: clamp(36px, 7vw, 86px); letter-spacing: .005em; line-height: 1; text-align: center; }
-.cover-sub { max-width: 620px; text-align: center; opacity: .9; font-size: 16px; margin: 0 0 26px; }
-.skyline { position: relative; z-index: 1; width: 100%; height: 150px; margin-top: auto; }
+.skyline { position: relative; z-index: 1; width: 100%; height: 130px; margin-top: auto; }
 .skyline svg { width: 100%; height: 100%; display: block; }
 .gold-rule { height: 4px; background: linear-gradient(90deg, #b48c40, var(--gold), #e6cc8f, var(--gold), #b48c40); }
-.cover-foot { background: #fff; display: flex; justify-content: center; padding: 14px 16px; }
-.cover-foot img { height: 66px; width: auto; }
+.cover-foot { position: relative; z-index: 2; background: #fff; display: flex; justify-content: center; padding: 16px 16px; }
+.cover-foot img { height: 52px; width: auto; image-rendering: auto; }
 
 /* login card on the cover */
 .login-card {
-  position: relative; z-index: 3; width: min(440px, 100%); background: rgba(255,255,255,.97); color: var(--ink);
-  border-radius: 18px; padding: 22px; box-shadow: 0 20px 60px rgba(0,0,0,.35); margin-bottom: 26px;
+  position: relative; z-index: 3; width: min(420px, 100%); justify-self: end; background: rgba(255,255,255,.97); color: var(--ink);
+  border-radius: 18px; padding: 22px; box-shadow: 0 20px 60px rgba(0,0,0,.35);
 }
+@media (max-width: 860px) { .login-card { justify-self: center; } }
 .login-card h2 { margin: 0 0 4px; font-size: 19px; }
 .login-card p.lead { margin: 0 0 16px; color: var(--ink-soft); font-size: 14px; }
 .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--mist); border-radius: 10px; padding: 4px; margin-bottom: 16px; }
@@ -320,4 +325,42 @@ table.t td { padding: 9px 8px; border-bottom: 1px solid #edf1f7; vertical-align:
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 .site-foot { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 26px 16px 34px; border-top: 1px solid var(--line); background: #fff; }
-.site-foot img { height: 46px; margin: 0 auto 8px; }
+.site-foot img { height: 40px; margin: 0 auto 8px; }
+
+/* ---------- round 2 ---------- */
+.muted { color: var(--ink-soft); }
+.sec-t { font-size: 19px; color: var(--navy-800); margin: 26px 0 10px; }
+.events { display: grid; gap: 12px; }
+.events .event { margin-top: 0; grid-template-columns: 1fr; }
+.post-form { display: grid; gap: 10px; }
+.post-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.file-btn { cursor: pointer; max-width: 100%; }
+.file-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 240px; }
+.board-pub { display: grid; gap: 10px; }
+.pnote { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--navy-500); border-radius: 12px; padding: 12px 14px; }
+.pnote.pres { border-left-color: var(--gold); }
+.pnote .m { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; color: var(--ink-soft); }
+.pnote h3 { margin: 6px 0 2px; font-size: 16px; }
+.pnote p { margin: 4px 0 0; white-space: pre-wrap; }
+.linkbtn.danger { color: var(--danger); }
+.attach { margin-top: 10px; display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; text-decoration: none; color: var(--ink); background: var(--mist); max-width: 100%; }
+.attach span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.attach small { color: var(--ink-soft); white-space: nowrap; }
+.ft { font-size: 11px; font-weight: 800; letter-spacing: .06em; background: var(--navy-800); color: #fff; padding: 3px 7px; border-radius: 5px; }
+.ft.docx, .ft.doc { background: #1f5fbf; }
+.ft.pdf { background: #b4232f; }
+.cover-thumb { position: relative; height: 210px; background: #e9eef6; overflow: hidden; border-bottom: 1px solid var(--line); display: flex; justify-content: center; align-items: flex-start; padding-top: 12px; }
+.cover-thumb img { width: 76%; box-shadow: 0 4px 14px rgba(7,26,61,.18); border-radius: 2px; transition: transform .2s; }
+.doc:hover .cover-thumb img { transform: translateY(-3px); }
+.cover-thumb .ft { position: absolute; left: 10px; top: 10px; }
+.docs { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+.doc .body h3 { font-size: 14.5px; margin: 0; }
+.contacts { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.contact { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+.contact .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.contact .role { font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: #8a6a24; background: #fbf6ea; border: 1px solid var(--gold-soft); border-radius: 6px; padding: 4px 10px; }
+.contact .inst { font-size: 12.5px; font-weight: 600; color: var(--navy-700); background: var(--mist); border-radius: 6px; padding: 4px 10px; }
+.contact .cname { margin-top: 14px; color: var(--ink-soft); font-size: 14px; }
+.contact .cmail { font-size: 19px; font-weight: 700; word-break: break-all; margin: 2px 0 16px; }
+.contact .cbtns { display: flex; gap: 8px; flex-wrap: wrap; }
+@media (max-width: 400px) { .contacts { grid-template-columns: 1fr; } }

@@ -34,6 +34,16 @@ module.exports = async (req, res) => {
       }
     }
 
+    if (key === 'events') {
+      if (req.method === 'GET') return L.send(res, 200, { value: await L.getJSON('events', null) });
+      if (req.method === 'PUT' && isAdmin) {
+        const b = await L.readBody(req);
+        if (!Array.isArray(b.value)) return L.send(res, 400, { error: 'Events must be a list.' });
+        await L.setJSON('events', b.value);
+        return L.send(res, 200, { ok: true });
+      }
+    }
+
     if (key === 'mysanctions' && req.method === 'GET') {
       const all = await L.getJSON('sanctions', []);
       return L.send(res, 200, { value: all.filter((s) => s.country === user.id) });

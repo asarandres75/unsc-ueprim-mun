@@ -2,8 +2,7 @@
 const crypto = require('crypto');
 
 const PRESIDENCY_CODE = process.env.PRESIDENCY_CODE || 'PresidenciaUNSC2026';
-const DELEGATE_CODE = process.env.DELEGATE_CODE || 'DelegadosUNSC2026';
-const SECRET = process.env.SESSION_SECRET || ('unsc-ueprim-' + PRESIDENCY_CODE + '-' + DELEGATE_CODE);
+const SECRET = process.env.SESSION_SECRET || ('unsc-ueprim-' + PRESIDENCY_CODE + '-DelegadosUNSC2026');
 
 // Upstash Redis over REST. Vercel's Upstash/KV integration sets one of these pairs.
 const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '';
@@ -71,6 +70,6 @@ function send(res, status, data) {
 }
 
 module.exports = {
-  PRESIDENCY_CODE, DELEGATE_CODE, hasStorage, getJSON, setJSON, del,
+  PRESIDENCY_CODE, hasStorage, getJSON, setJSON, del,
   sign, verify, userFrom, hashPin, safeEqual, readBody, send,
 };

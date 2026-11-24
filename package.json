@@ -2,6 +2,13 @@
   "name": "unsc-ueprim-mun",
   "private": true,
   "description": "UNSC delegate website for UEPRIM-MUN IV Edition 2026-2027",
-  "engines": { "node": ">=20" },
-  "scripts": { "dev": "vercel dev" }
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.0.0"
+  }
 }

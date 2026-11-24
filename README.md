@@ -20,7 +20,7 @@ Without a database the site still works, but notes, sanctions and notices are sa
 
 ## Turning on file uploads for the public notes board
 
-Attaching a PDF or Word file to a public note needs a Vercel Blob store. In Vercel, open the project, go to **Storage**, choose **Create Database**, pick **Blob** and connect it to this project, then redeploy. Vercel adds `BLOB_READ_WRITE_TOKEN` by itself. Files can be up to 4 MB.
+Attaching a PDF or Word file to a public note needs a Vercel Blob store. In Vercel, open the project, go to **Storage**, choose **Create Database**, pick **Blob** and connect it to this project, then redeploy. Vercel adds `BLOB_READ_WRITE_TOKEN` by itself. Files can be up to 4 MB. The live site already uses the public Blob store `unsc-ueprim-mun-blob`.
 
 ## How to change the content
 

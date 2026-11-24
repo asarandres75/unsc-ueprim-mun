@@ -159,10 +159,8 @@
       $('#roleFields').innerHTML = role === 'delegate' ? `
         <div class="field"><label class="f" for="country">Delegation</label>
           <select class="input" id="country" required><option value="">Choose your delegation</option>${opts}</select></div>
-        <div class="field"><label class="f" for="pin">Personal PIN</label>
-          <input class="input" id="pin" type="password" required minlength="4" autocomplete="current-password" placeholder="Enter your PIN"></div>` : `
-        <div class="field"><label class="f" for="member">Member</label>
-          <select class="input" id="member"><option>President</option><option selected>Vice-President</option><option>Secretary</option></select></div>
+        <div class="field"><label class="f" for="pin">PIN</label>
+          <input class="input" id="pin" type="password" required minlength="4" autocomplete="current-password" placeholder="Enter PIN"></div>` : `
         <div class="field"><label class="f" for="code">Code</label>
           <input class="input" id="code" type="password" required autocomplete="off" placeholder="Enter code"></div>`;
       const saved = ls.get('unsc.lastCountry', '');
@@ -179,7 +177,7 @@
       const btn = $('#loginBtn'); btn.disabled = true; btn.textContent = 'Checking...';
       const body = { role };
       if (role === 'delegate') { body.country = $('#country').value; body.pin = $('#pin').value; }
-      else { body.member = $('#member').value; body.code = $('#code').value; }
+      else { body.code = $('#code').value; }
       try {
         const j = await api('/api/login', { method: 'POST', body: JSON.stringify(body) });
         session = { token: j.token, user: j.user, storage: j.storage };

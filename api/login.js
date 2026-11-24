@@ -1,7 +1,6 @@
 const L = require('./_lib');
 
 const COUNTRIES = require('../public/js/roster.json');
-const DAIS = ['President', 'Vice-President', 'Secretary'];
 const DAY = 24 * 60 * 60 * 1000;
 
 module.exports = async (req, res) => {
@@ -13,8 +12,7 @@ module.exports = async (req, res) => {
     if (!L.safeEqual((b.code || '').trim(), L.PRESIDENCY_CODE)) {
       return L.send(res, 401, { error: 'That Presidency code is not right.' });
     }
-    const member = DAIS.includes(b.member) ? b.member : 'Presidency';
-    const user = { role: 'presidency', id: 'dais-' + member.toLowerCase().replace(/[^a-z]/g, ''), name: member, exp: Date.now() + 14 * DAY };
+    const user = { role: 'presidency', id: 'dais-presidency', name: 'Presidency', exp: Date.now() + 14 * DAY };
     return L.send(res, 200, { token: L.sign(user), user, storage });
   }
 

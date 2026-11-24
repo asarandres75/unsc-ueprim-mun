@@ -46,7 +46,6 @@ window.SITE = {
       ['Position paper example: Algeria', 'docs/position-paper-example-algeria.pdf'],
       ['Opening speech example: Lesotho', 'docs/opening-speech-example-lesotho.pdf'],
       ['Country research example: China', 'docs/country-research-china.pdf'],
-      ['Resolution format, worked example', 'docs/resolution-format-example.pdf'],
       ['Draft Resolution B example', 'docs/draft-resolution-example.pdf'],
       ['Declaration example: Russian Federation', 'docs/declaration-example-russia.pdf'],
       ['Russian declaration with Presidency notes', 'docs/declaration-russia-notes.pdf'],

@@ -30,6 +30,7 @@ window.SITE = {
   documents: [
     { group: 'Start here', items: [
       ['Security Council Handbook', 'docs/unsc-handbook.pdf'],
+      ['Handbook references', 'docs/handbook-references.pdf'],
       ['Estatuto General Oficial 2026–2027', 'docs/estatuto-general-oficial.pdf'],
     ]},
     { group: 'Guides', items: [

@@ -378,6 +378,10 @@ table.t td { padding: 9px 8px; border-bottom: 1px solid #edf1f7; vertical-align:
 .admin-head .head-link { position: relative; z-index: 1; margin-top: 14px; display: inline-flex; }
 .sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
 .sheet-head h2 { margin: 0; }
-.sheet-frame { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #fff; }
-.sheet-frame iframe { display: block; width: 100%; height: 640px; border: 0; }
-@media (max-width: 700px) { .sheet-frame iframe { height: 480px; } }
+.sheet-scroll { position: relative; border: 1px solid var(--line); border-radius: 10px; background: #fff; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; }
+.sheet-crop { width: 2400px; height: 520px; overflow: hidden; }
+.sheet-crop iframe { display: block; width: 2400px; height: 562px; border: 0; } /* bottom bar of the sheet is cut off */
+.sheet-shield { position: absolute; top: 0; left: 0; width: 2400px; height: 520px; border: 0; background: transparent; cursor: pointer; color: transparent; font: inherit; }
+.sheet-shield:hover, .sheet-shield:focus-visible { background: rgba(12,42,91,.04); color: var(--navy-700); font-weight: 600; }
+.sheet-shield[hidden] { display: none; }
+

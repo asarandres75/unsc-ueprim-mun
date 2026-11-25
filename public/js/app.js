@@ -591,12 +591,16 @@
       try { names = await fetch('/api/private?file=delegates.json&t=' + encodeURIComponent(session.token)).then((r) => r.ok ? r.json() : {}); } catch {}
       if (!box.isConnected) return;
       const off = store.online() ? '' : 'disabled title="Needs the online database"';
-      box.innerHTML = `<div class="panel"><h2>Delegations and PINs</h2><p class="sub">Type a PIN and press Set PIN to give it to a delegation. A new PIN replaces the old one, and their notes are kept.</p>
+      box.innerHTML = `<div class="panel"><div class="sheet-head"><h2>Attendance</h2><a class="btn btn-ghost btn-sm" href="https://docs.google.com/spreadsheets/d/1uV5_3CABXLpHdNI2BQOSk_IAU-q03yCcTJkTxOF7iuk/edit?usp=sharing" target="_blank" rel="noopener">Open in Google Sheets</a></div>
+          <div class="sheet-scroll" id="sheetBox"><div class="sheet-crop"><iframe src="https://docs.google.com/spreadsheets/d/1uV5_3CABXLpHdNI2BQOSk_IAU-q03yCcTJkTxOF7iuk/edit?usp=sharing&rm=minimal" title="Attendance sheet" loading="lazy" scrolling="no"></iframe></div><button type="button" class="sheet-shield" id="sheetShield">Click to edit the sheet</button></div></div>
+        <div class="panel"><h2>Delegations and PINs</h2><p class="sub">Type a PIN and press Set PIN to give it to a delegation. A new PIN replaces the old one, and their notes are kept.</p>
         <div class="table-wrap"><table class="t"><thead><tr><th>Delegation</th><th>Delegate</th><th>Seat</th><th>PIN</th></tr></thead><tbody>
         ${ROSTER.map((c) => `<tr><td>${flag(c.iso)}<b>${esc(c.short)}</b><br><small>${esc(c.name)}</small></td><td>${esc(names[c.id] || '')}</td><td>${['china','france','russia','uk','usa'].includes(c.id) ? 'Permanent' : 'Non-permanent'}</td>
           <td style="white-space:nowrap"><span class="hint" data-state="${c.id}" style="display:inline-block;min-width:56px">${has[c.id] ? 'Set' : 'Not set'}</span><input class="input" style="width:120px;display:inline-block" data-pin="${c.id}" placeholder="New PIN" autocomplete="off" ${off}> <button class="btn btn-gold btn-sm" data-setpin="${c.id}" ${off}>Set PIN</button></td></tr>`).join('')}</tbody></table></div></div>
-        <div class="panel"><div class="sheet-head"><h2>Attendance</h2><a class="btn btn-ghost btn-sm" href="https://docs.google.com/spreadsheets/d/1uV5_3CABXLpHdNI2BQOSk_IAU-q03yCcTJkTxOF7iuk/edit?usp=sharing" target="_blank" rel="noopener">Open in Google Sheets</a></div>
-          <div class="sheet-frame"><iframe src="https://docs.google.com/spreadsheets/d/1uV5_3CABXLpHdNI2BQOSk_IAU-q03yCcTJkTxOF7iuk/edit?usp=sharing&rm=minimal" title="Attendance sheet" loading="lazy"></iframe></div></div>`;
+`;
+      const shield = $('#sheetShield'), sbox = $('#sheetBox');
+      shield.onclick = () => { shield.hidden = true; };
+      sbox.addEventListener('mouseleave', () => { shield.hidden = false; });
       $$('[data-setpin]', box).forEach((b) => b.onclick = async () => {
         const id = b.dataset.setpin;
         const inp = $(`[data-pin="${id}"]`, box);

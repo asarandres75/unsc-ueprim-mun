@@ -454,7 +454,7 @@
     const tab = sub || 'sanctions';
     const tabs = [['sanctions', 'Sanctions'], ['internal', 'Internal notes'], ['evaluations', 'Evaluations'], ['notice', 'Events and announcement'], ['delegations', 'Delegations']];
     app.innerHTML = shell(`
-      <section class="hub-head admin-head"><img class="bgem" src="assets/emblem-light.png" alt=""><div class="k">${esc(session.user.name)}</div><h1>Presidency Only</h1><div class="gold-line"></div></section>
+      <section class="hub-head admin-head"><img class="bgem" src="assets/emblem-light.png" alt=""><div class="k">${esc(session.user.name)}</div><h1>Presidency Only</h1><div class="gold-line"></div><a class="btn btn-gold btn-sm head-link" href="https://gavelling.com/create/sessions" target="_blank" rel="noopener">Open Gavelling</a></section>
       <div class="tabs">${tabs.map(([k, t]) => `<a href="#/presidency/${k}" class="${k === tab ? 'on' : ''}">${t}</a>`).join('')}</div>
       <div id="adm"><p>Loading...</p></div>`, '#/presidency');
     const box = $('#adm');
@@ -594,7 +594,9 @@
       box.innerHTML = `<div class="panel"><h2>Delegations and PINs</h2><p class="sub">Type a PIN and press Set PIN to give it to a delegation. A new PIN replaces the old one, and their notes are kept.</p>
         <div class="table-wrap"><table class="t"><thead><tr><th>Delegation</th><th>Delegate</th><th>Seat</th><th>PIN</th></tr></thead><tbody>
         ${ROSTER.map((c) => `<tr><td>${flag(c.iso)}<b>${esc(c.short)}</b><br><small>${esc(c.name)}</small></td><td>${esc(names[c.id] || '')}</td><td>${['china','france','russia','uk','usa'].includes(c.id) ? 'Permanent' : 'Non-permanent'}</td>
-          <td style="white-space:nowrap"><span class="hint" data-state="${c.id}" style="display:inline-block;min-width:56px">${has[c.id] ? 'Set' : 'Not set'}</span><input class="input" style="width:120px;display:inline-block" data-pin="${c.id}" placeholder="New PIN" autocomplete="off" ${off}> <button class="btn btn-gold btn-sm" data-setpin="${c.id}" ${off}>Set PIN</button></td></tr>`).join('')}</tbody></table></div></div>`;
+          <td style="white-space:nowrap"><span class="hint" data-state="${c.id}" style="display:inline-block;min-width:56px">${has[c.id] ? 'Set' : 'Not set'}</span><input class="input" style="width:120px;display:inline-block" data-pin="${c.id}" placeholder="New PIN" autocomplete="off" ${off}> <button class="btn btn-gold btn-sm" data-setpin="${c.id}" ${off}>Set PIN</button></td></tr>`).join('')}</tbody></table></div></div>
+        <div class="panel"><div class="sheet-head"><h2>Attendance</h2><a class="btn btn-ghost btn-sm" href="https://docs.google.com/spreadsheets/d/1uV5_3CABXLpHdNI2BQOSk_IAU-q03yCcTJkTxOF7iuk/edit?usp=sharing" target="_blank" rel="noopener">Open in Google Sheets</a></div>
+          <div class="sheet-frame"><iframe src="https://docs.google.com/spreadsheets/d/1uV5_3CABXLpHdNI2BQOSk_IAU-q03yCcTJkTxOF7iuk/edit?usp=sharing&rm=minimal" title="Attendance sheet" loading="lazy"></iframe></div></div>`;
       $$('[data-setpin]', box).forEach((b) => b.onclick = async () => {
         const id = b.dataset.setpin;
         const inp = $(`[data-pin="${id}"]`, box);

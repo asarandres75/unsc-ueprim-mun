@@ -50,6 +50,8 @@ window.SITE = {
       ['Draft Resolution B example', 'docs/draft-resolution-example.pdf'],
       ['Declaration example: Russian Federation', 'docs/declaration-example-russia.pdf'],
       ['Russian declaration with Presidency notes', 'docs/declaration-russia-notes.pdf'],
+      ['Resolution example (Spanish)', 'docs/resolution-example-spanish.pdf'],
+      ['Multilateral declaration example (Spanish)', 'docs/multilateral-declaration-example-spanish.pdf'],
     ]},
     { group: 'Templates', items: [
       ['Position paper template', 'docs/position-paper-template.docx'],

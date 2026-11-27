@@ -57,7 +57,7 @@ window.SITE = {
       ['Declaration format', 'docs/declaration-format.pdf'],
       ['Statement on the Exercise of the VETO', 'docs/veto-statement-format.pdf'],
     ]},
-    { group: 'Mock sessions', items: [
+    { group: 'MOCK SESSION: The Situation in Myanmar', items: [
       ['The Situation in Myanmar, background guide', 'docs/myanmar-background.pdf'],
       ['UNSC Myanmar Newspaper', 'docs/myanmar-newspaper.pdf'],
       ['Myanmar Draft Resolution A', 'docs/myanmar-resolution-a.pdf'],

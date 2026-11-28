@@ -106,7 +106,7 @@
         </nav>
       </div></header>
       <main>${!store.online() && isAdmin() ? `<div class="banner"><div><b>The online database is not connected.</b> Changes are being saved in this browser only.</div></div>` : ''}${inner}</main>
-      <footer class="site-foot"><img src="assets/ueprim-logos.png" alt="UEPRIM 50 years and UEPRIM MUN"><div>United Nations Security Council, UEPRIM-MUN ${esc(S.edition)}</div></footer>`;
+      <footer class="site-foot"><img src="assets/ueprim-logos.png" alt="UEPRIM 50 years and UEPRIM MUN"></footer>`;
   }
   function pageHead(kicker, title, right = '') {
     return `<div class="page-head"><div>${kicker ? `<div class="k">${esc(kicker)}</div>` : ''}<h1>${esc(title)}</h1></div>${right}</div>`;

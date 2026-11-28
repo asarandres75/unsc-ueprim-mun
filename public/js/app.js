@@ -471,14 +471,14 @@
           const effF = f + Math.floor(w / 2);
           return `<div><span>${flag(c.iso)}${esc(c.short)}</span>${effF ? `<span class="status f">${effF} formal</span>` : w ? `<span class="status w">${w} written</span>` : '<span class="status ok">Clean</span>'}</div>`;
         }).join('');
-        box.innerHTML = `<div class="panel"><h2>Apply a sanction</h2><p class="sub">Two written warnings count as one formal warning (Estatuto, Art. 56 and 57).</p>
+        box.innerHTML = `<div class="panel"><h2>Apply a sanction</h2>
           <form id="sf" class="form-grid">
             <div><label class="f">Delegation</label><select class="input" id="sc" required><option value="">Choose</option>${countryOpts}</select></div>
             <div><label class="f">Type</label><select class="input" id="st"><option value="written">Written warning</option><option value="formal">Formal warning</option></select></div>
             <div><label class="f">Session or day</label><input class="input" id="sd" placeholder="Write..."></div>
             <div style="grid-column:1/-1"><label class="f">Reason</label><input class="input" id="sr" required placeholder="Write..."></div>
             <div><button class="btn btn-gold" type="submit">Record sanction</button></div></form></div>
-          <div class="panel"><h2>Where every delegation stands</h2><p class="sub">Formal counts include every pair of written warnings.</p><div class="tally">${tally}</div>
+          <div class="panel"><h2>Where every delegation stands</h2><div class="tally">${tally}</div>
           <div class="table-wrap"><table class="t"><thead><tr><th>Delegation</th><th>Type</th><th>Reason</th><th>Day</th><th>By</th><th></th></tr></thead><tbody>
           ${list.length ? list.slice().sort((a, b) => b.at - a.at).map((s) => `<tr><td>${flag(country(s.country).iso)}${esc(country(s.country).short)}</td><td><span class="status ${s.type === 'formal' ? 'f' : 'w'}">${s.type === 'formal' ? 'Formal' : 'Written'}</span></td><td>${esc(s.reason)}</td><td>${esc(s.day || '')}</td><td>${esc(s.by)}<br><small style="color:var(--ink-soft)">${fmtTime(s.at)}</small></td><td><button class="btn btn-danger btn-sm" data-del="${s.id}">Remove</button></td></tr>`).join('')
             : '<tr><td colspan="6" style="color:var(--ink-soft)">No sanctions recorded yet, which is a good sign.</td></tr>'}</tbody></table></div></div>`;
@@ -501,7 +501,7 @@
       const drawI = async () => {
         const list = await store.get('internal', []);
         if (!box.isConnected) return;
-        box.innerHTML = `<div class="panel"><h2>Internal notes</h2><p class="sub">Only the Presidency can see this board.</p>
+        box.innerHTML = `<div class="panel"><h2>Internal notes</h2>
           <form id="inf"><textarea class="input" id="intext" rows="4" required placeholder="Write a note for the Presidency"></textarea><div style="margin-top:10px"><button class="btn btn-gold" type="submit">Post to the board</button></div></form></div>
           <div class="board">${list.length ? list.slice().sort((a, b) => (b.pinned - a.pinned) || (b.at - a.at)).map((n) => `<div class="item"><div class="m"><span><b>${esc(n.by)}</b>, ${fmtTime(n.at)}${n.pinned ? ' (pinned)' : ''}</span><span><button class="linkbtn" style="color:var(--navy-600)" data-pin="${n.id}">${n.pinned ? 'Unpin' : 'Pin'}</button> &nbsp; <button class="linkbtn" style="color:var(--danger)" data-del="${n.id}">Delete</button></span></div><p>${esc(n.text)}</p></div>`).join('') : '<div class="empty">The board is empty for now.</div>'}</div>`;
         $('#inf').onsubmit = async (e) => {
@@ -525,7 +525,7 @@
         if (!box.isConnected) return;
         const avg = (c) => { const m = list.filter((e) => e.country === c); if (!m.length) return null; return (m.reduce((s, e) => s + e.total, 0) / m.length).toFixed(1); };
         const ranking = ROSTER.map((c) => ({ c, a: avg(c.id), n: list.filter((e) => e.country === c.id).length })).filter((x) => x.a != null).sort((a, b) => b.a - a.a);
-        box.innerHTML = `<div class="panel"><h2>Evaluate a delegate</h2><p class="sub">Official UNSC Delegate Evaluation rubric, 2 to 8 per criterion, total out of 40.</p>
+        box.innerHTML = `<div class="panel"><h2>Delegate Evaluation</h2>
           <form id="ef"><div class="form-grid"><div><label class="f">Delegation</label><select class="input" id="ec" required><option value="">Choose</option>${countryOpts}</select></div>
             <div><label class="f">Topic</label><input class="input" id="et" placeholder="Write..."></div><div><label class="f">Day</label><input class="input" id="ed" placeholder="Write..."></div></div>
             <div style="margin:12px 0">${CRITERIA.map(([k, t, d]) => `<div class="score-row"><div><b>${t}</b><small>${d}</small></div><select class="input" data-k="${k}">${[2, 3, 4, 5, 6, 7, 8].map((v) => `<option ${v === 6 ? 'selected' : ''}>${v}</option>`).join('')}</select></div>`).join('')}</div>
@@ -565,7 +565,7 @@
             <button class="btn btn-gold" type="submit">Add event</button></form>
           <div class="table-wrap" style="margin-top:14px"><table class="t"><thead><tr><th>Event</th><th>When</th><th></th></tr></thead><tbody>
           ${evs.length ? evs.map((e, i) => `<tr><td><b>${esc(e.title)}</b><br><small>${esc(e.text || '')}</small></td><td>${esc(e.when || '')}</td><td style="white-space:nowrap">${i > 0 ? `<button class="btn btn-ghost btn-sm" data-up="${i}">Move up</button> ` : ''}<button class="btn btn-danger btn-sm" data-delev="${i}">Remove</button></td></tr>`).join('') : '<tr><td colspan="3" style="color:var(--ink-soft)">No events.</td></tr>'}</tbody></table></div></div>
-          <div class="panel"><h2>Announcement</h2><p class="sub">Banner at the top of Home. Leave it empty to hide it.</p>
+          <div class="panel"><h2>Announcement</h2>
           <textarea class="input" id="na" rows="3">${esc((n && n.announcement) || '')}</textarea>
           <div style="margin-top:10px"><button class="btn btn-gold" id="nsave">Publish announcement</button>${n && n.updatedBy ? `<span class="hint" style="margin-left:10px">Last updated by ${esc(n.updatedBy)}, ${fmtTime(n.updatedAt)}</span>` : ''}</div></div>`;
         const saveEv = async (list) => { await store.put('events', list); drawN(); };

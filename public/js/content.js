@@ -59,7 +59,7 @@ window.SITE = {
       ['Declaration format', 'docs/declaration-format.pdf'],
       ['Statement on the Exercise of the VETO', 'docs/veto-statement-format.pdf'],
     ]},
-    { group: 'MOCK SESSION: The Situation in Myanmar', items: [
+    { group: 'MOCK SESSION #1: The Situation in Myanmar', items: [
       ['The Situation in Myanmar, background guide', 'docs/myanmar-background.pdf'],
       ['UNSC Myanmar Newspaper', 'docs/myanmar-newspaper.pdf'],
       ['Myanmar Draft Resolution A', 'docs/myanmar-resolution-a.pdf'],
@@ -67,7 +67,7 @@ window.SITE = {
       ['Myanmar Draft Resolution B', 'docs/myanmar-resolution-b.pdf'],
       ['Myanmar Draft Resolution B with Presidency notes', 'docs/myanmar-resolution-b-notes.pdf'],
     ]},
-    { group: 'MOCK SESSION: Military Competition in Outer Space', items: [
+    { group: 'MOCK SESSION #2: Military Competition in Outer Space', items: [
       ['Introduction to the topic', 'docs/outer-space-topic.pdf'],
     ]},
     { group: 'Other', items: [
@@ -142,11 +142,11 @@ window.SITE = {
       { day: '7', title: 'Speech practice and the position paper', text: 'Speeches under formal committee conditions with peer and mentor evaluation, followed by a full mock session of Topic A and an introduction to the four-part position paper.', docs: ['docs/position-paper-guide.pdf'] },
       { day: '8–9', title: 'Writing the position paper', text: 'We reviewed the document header, the formatting rules and APA 7 citations using a paper from a previous model, then checked whether each delegate’s argument really matched their country’s stance. Everyone left with at least the introduction written.', docs: ['docs/position-paper-example-algeria.pdf', 'docs/position-paper-template.docx'] },
       { day: '10–13', title: 'Cyberattacks mini-simulation and resolution workshop', text: 'A 45-minute mini-session on cyberattacks against critical infrastructure where delegates practised the Guest Speakers’ List and rounds of extraordinary questions, more work on position papers for both topics, and a first workshop on how resolutions and working papers are built.', docs: ['docs/resolution-guide.pdf'] },
-      { day: '14–16', title: 'Mock Simulation I: Myanmar', text: 'Our first full simulation over three sessions, on the protection of civilians, ethnic conflict and the restoration of democratic governance in Myanmar. It closed with a Tour de Table, two competing draft resolutions, one from Haiti and the United States and one from China, and a formal vote.', docs: ['docs/myanmar-background.pdf', 'docs/myanmar-resolution-a.pdf', 'docs/myanmar-resolution-b.pdf'] },
+      { day: '14–16', title: 'Mock Simulation #1: Myanmar', text: 'Our first full simulation over three sessions, on the protection of civilians, ethnic conflict and the restoration of democratic governance in Myanmar. It closed with a Tour de Table, two competing draft resolutions, one from Haiti and the United States and one from China, and a formal vote.', docs: ['docs/myanmar-background.pdf', 'docs/myanmar-resolution-a.pdf', 'docs/myanmar-resolution-b.pdf'] },
       { day: '17', title: 'Advanced resolution writing and the VETO', text: 'Feedback on both Myanmar resolutions, a class on resolutions, declarations and amendments, the VETO and how it is presented, and a workshop where groups found and fixed the flaws in real clauses.', docs: ['docs/draft-resolution-guide.pdf', 'docs/declaration-guide.pdf', 'docs/veto-statement-format.pdf'] },
       { day: '18', title: 'Strategy session', text: 'Individual and small-group strategy meetings to refine opening speeches and prepare for specific voting scenarios, a second look at Topics A and B and the new website, a presentation on how national interests shape negotiations, a diplomatic roundtable, and a short class for the P5 on how the Motion to exercise the VETO works.', docs: ['docs/day-18-presentation.pdf', 'docs/strategy-session-instructions.pdf', 'docs/veto-statement-format.pdf'] },
-      { day: '19–20', title: 'Mock Simulation II: Military Competition in Outer Space', docs: ['docs/outer-space-topic.pdf'], text: 'Outer space has become an increasingly important place for military and political competition. As nations expand their anti-satellite capabilities (ASAT), concerns arise regarding the potential escalation of an arms race, the generation of orbital debris and the vulnerability of essential satellite infrastructure, including telecommunications, navigation and emergency response systems.' },
-      { day: '21', title: 'Mock II feedback, diplomatic strategy and persuasive arguments', text: 'We review how each delegation performed in the second mock simulation and how its resolutions held up, then move into an interactive workshop on diplomatic influence, strategic negotiation, persuasive argumentation, national interests and consensus-building. Delegates then apply these techniques to the official UNSC topics to prepare for the conference.' },
+      { day: '19–20', title: 'Mock Simulation #2: Military Competition in Outer Space', docs: ['docs/outer-space-topic.pdf'], text: 'Outer space has become an increasingly important place for military and political competition. As nations expand their anti-satellite capabilities (ASAT), concerns arise regarding the potential escalation of an arms race, the generation of orbital debris and the vulnerability of essential satellite infrastructure, including telecommunications, navigation and emergency response systems.' },
+      { day: '21', title: 'Mock #2 feedback, diplomatic strategy and persuasive arguments', text: 'We review how each delegation performed in the second mock simulation and how its resolutions held up, then move into an interactive workshop on diplomatic influence, strategic negotiation, persuasive argumentation, national interests and consensus-building. Delegates then apply these techniques to the official UNSC topics to prepare for the conference.', upcoming: true },
     ],
   },
 

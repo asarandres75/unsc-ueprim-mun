@@ -75,6 +75,8 @@ window.SITE = {
       ['Strategy session instructions', 'docs/strategy-session-instructions.pdf'],
       ['Resolution with flaws', 'docs/workshop-resolution-with-flaws.pdf'],
       ['Declaration with flaws', 'docs/workshop-declaration-with-flaws.pdf'],
+      ['Resolution with flaws: solutions', 'docs/resolution-flaws-solutions.pdf'],
+      ['Declaration with flaws: solutions', 'docs/declaration-flaws-solutions.pdf'],
     ]},
   ],
 

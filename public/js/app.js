@@ -454,7 +454,7 @@
     const tab = sub || 'sanctions';
     const tabs = [['sanctions', 'Sanctions'], ['internal', 'Internal notes'], ['evaluations', 'Evaluations'], ['notice', 'Events and announcement'], ['delegations', 'Delegations']];
     app.innerHTML = shell(`
-      <section class="hub-head admin-head"><img class="bgem" src="assets/emblem-light.png" alt=""><div class="k">${esc(session.user.name)}</div><h1>Presidency Only</h1><div class="gold-line"></div><a class="btn btn-gold btn-sm head-link" href="https://gavelling.com/create/sessions" target="_blank" rel="noopener">Open Gavelling</a></section>
+      <section class="hub-head admin-head"><img class="bgem" src="assets/emblem-light.png" alt=""><h1>Presidency Only</h1><div class="gold-line"></div><a class="btn btn-gold btn-sm head-link" href="https://gavelling.com/create/sessions" target="_blank" rel="noopener">Open Gavelling</a></section>
       <div class="tabs">${tabs.map(([k, t]) => `<a href="#/presidency/${k}" class="${k === tab ? 'on' : ''}">${t}</a>`).join('')}</div>
       <div id="adm"><p>Loading...</p></div>`, '#/presidency');
     const box = $('#adm');

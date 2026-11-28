@@ -67,6 +67,9 @@ window.SITE = {
       ['Myanmar Draft Resolution B', 'docs/myanmar-resolution-b.pdf'],
       ['Myanmar Draft Resolution B with Presidency notes', 'docs/myanmar-resolution-b-notes.pdf'],
     ]},
+    { group: 'MOCK SESSION: Military Competition in Outer Space', items: [
+      ['Introduction to the topic', 'docs/outer-space-topic.pdf'],
+    ]},
     { group: 'Other', items: [
       ['Day 18 presentation', 'docs/day-18-presentation.pdf'],
       ['Strategy session instructions', 'docs/strategy-session-instructions.pdf'],
@@ -142,7 +145,8 @@ window.SITE = {
       { day: '14–16', title: 'Mock Simulation I: Myanmar', text: 'Our first full simulation over three sessions, on the protection of civilians, ethnic conflict and the restoration of democratic governance in Myanmar. It closed with a Tour de Table, two competing draft resolutions, one from Haiti and the United States and one from China, and a formal vote.', docs: ['docs/myanmar-background.pdf', 'docs/myanmar-resolution-a.pdf', 'docs/myanmar-resolution-b.pdf'] },
       { day: '17', title: 'Advanced resolution writing and the VETO', text: 'Feedback on both Myanmar resolutions, a class on resolutions, declarations and amendments, the VETO and how it is presented, and a workshop where groups found and fixed the flaws in real clauses.', docs: ['docs/draft-resolution-guide.pdf', 'docs/declaration-guide.pdf', 'docs/veto-statement-format.pdf'] },
       { day: '18', title: 'Strategy session', text: 'Individual and small-group strategy meetings to refine opening speeches and prepare for specific voting scenarios, a second look at Topics A and B and the new website, a presentation on how national interests shape negotiations, a diplomatic roundtable, and a short class for the P5 on how the Motion to exercise the VETO works.', docs: ['docs/day-18-presentation.pdf', 'docs/strategy-session-instructions.pdf', 'docs/veto-statement-format.pdf'] },
-      { day: '19–20', title: 'Mock Simulation II', text: 'Outer space has become an increasingly important place for military and political competition. As nations expand their anti-satellite capabilities (ASAT), concerns arise regarding the potential escalation of an arms race, the generation of orbital debris and the vulnerability of essential satellite infrastructure, including telecommunications, navigation and emergency response systems.' },
+      { day: '19–20', title: 'Mock Simulation II: Military Competition in Outer Space', docs: ['docs/outer-space-topic.pdf'], text: 'Outer space has become an increasingly important place for military and political competition. As nations expand their anti-satellite capabilities (ASAT), concerns arise regarding the potential escalation of an arms race, the generation of orbital debris and the vulnerability of essential satellite infrastructure, including telecommunications, navigation and emergency response systems.' },
+      { day: '21', title: 'Mock II feedback, diplomatic strategy and persuasive arguments', text: 'We review how each delegation performed in the second mock simulation and how its resolutions held up, then move into an interactive workshop on diplomatic influence, strategic negotiation, persuasive argumentation, national interests and consensus-building. Delegates then apply these techniques to the official UNSC topics to prepare for the conference.' },
     ],
   },
 
